@@ -49,6 +49,11 @@
 @keyframes sparklePop{0%{opacity:0;transform:translate(0,0) scale(.3)}20%{opacity:1}100%{opacity:0;transform:translate(var(--sx),var(--sy)) scale(1.3) rotate(35deg)}}
 @media(max-width:700px){.star-choice-grid{grid-template-columns:1fr}.star-choice{min-height:0;padding:17px}.wish-orb{width:70px;height:70px}}
 @media(prefers-reduced-motion:reduce){.reveal-on-scroll{opacity:1;transform:none}#backToTop{transition:none}}
+
+.youtube-frame{width:min(700px,100%);aspect-ratio:16/9;margin:0 auto 22px;border:1px solid #f7d99a66;border-radius:22px;overflow:hidden;background:linear-gradient(145deg,#512447,#1b0c22);box-shadow:0 18px 50px #0005}
+.youtube-frame iframe{width:100%;height:100%;border:0;display:block}
+.youtube-placeholder{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;color:#ffe4ee}
+.youtube-placeholder span{font-size:48px}.youtube-placeholder b{font-family:'Cormorant Garamond',serif;font-size:27px;font-weight:500}.youtube-placeholder small{font-size:11px;color:#d9bdcd}
 </style></head>
 <body>
 <div id="readingProgress"></div><div class="sky"></div><div class="wrap">
@@ -108,20 +113,19 @@ Happy Princess Day, my favourite girl. ♡</div><div class="sign">With all my lo
 <div class="photo-slot"><img src="https://raw.githubusercontent.com/adityarrr01/my-riddhi/main/assets/riddhi-12.jpg" alt="Riddhi photo 12" loading="lazy"><div class="photo-placeholder"><span>💗</span><b>Riddhi's moment 12</b><small>A little piece of magic</small></div></div>
 </div></section>
 <section class="section" id="our-songs">
-<div class="kicker">Our soundtrack</div><h2>Songs that feel like you</h2>
-<p class="intro">A little music corner reserved for the songs you choose for her. Add your favourite tracks whenever you're ready. 🎧</p>
+<div class="kicker">Our soundtrack</div><h2>Three songs, a thousand feelings</h2>
+<p class="intro">A little soundtrack for my princess — every song chosen with you in mind. Tap a song and let it play right here. 🎧♡</p>
 <div class="song-player">
-<div class="vinyl" id="vinylDisc">♫</div><div class="now-playing"><small>NOW PLAYING</small><b id="songTitle">Choose a song, princess</b><span id="songArtist">Your special soundtrack ♡</span></div>
-<div class="player-controls"><button id="prevSong" aria-label="Previous song">⏮</button><button id="toggleSong" aria-label="Play song">▶</button><button id="nextSong" aria-label="Next song">⏭</button></div>
-<audio id="songAudio" preload="none"></audio>
+<div class="vinyl" id="vinylDisc">♫</div><div class="now-playing"><small>NOW PLAYING</small><b id="songTitle">Choose a song, princess</b><span id="songArtist">Your little love soundtrack ♡</span></div>
+<div class="player-controls"><button id="prevSong" aria-label="Previous song">⏮</button><button id="toggleSong" aria-label="Play selected song">▶</button><button id="nextSong" aria-label="Next song">⏭</button></div>
 </div>
+<div class="youtube-frame" id="youtubeFrame"><div class="youtube-placeholder"><span>🎶</span><b>Your soundtrack is waiting</b><small>Choose one of the songs below ♡</small></div></div>
 <div class="song-grid">
-<button class="song-card" data-song="0"><span class="album-art">♡</span><span class="song-meta"><b>Your song 1</b><small>Waiting for a special song ♡</small></span><span class="song-play">▶</span></button>
-<button class="song-card" data-song="1"><span class="album-art">♡</span><span class="song-meta"><b>Your song 2</b><small>Waiting for a special song ♡</small></span><span class="song-play">▶</span></button>
-<button class="song-card" data-song="2"><span class="album-art">♡</span><span class="song-meta"><b>Your song 3</b><small>Waiting for a special song ♡</small></span><span class="song-play">▶</span></button>
-<button class="song-card" data-song="3"><span class="album-art">♡</span><span class="song-meta"><b>Your song 4</b><small>Waiting for a special song ♡</small></span><span class="song-play">▶</span></button>
+<button class="song-card" data-song="0"><span class="album-art">🌹</span><span class="song-meta"><b>Tera Deedar Hua</b><small>Javed Ali · Jannat 2</small></span><span class="song-play">▶</span></button>
+<button class="song-card" data-song="1"><span class="album-art">💃</span><span class="song-meta"><b>Shape of You</b><small>Ed Sheeran</small></span><span class="song-play">▶</span></button>
+<button class="song-card" data-song="2"><span class="album-art">🌙</span><span class="song-meta"><b>Agar Tum Saath Ho</b><small>Alka Yagnik &amp; Arijit Singh</small></span><span class="song-play">▶</span></button>
 </div>
-<p class="tiny">Your four personal song spaces are ready. No songs have been added yet. ♡</p>
+<p class="tiny">Official YouTube videos play here. No OURFLIX audio files are used. ♡</p>
 </section>
 <section class="surprise" id="surprise"><div class="kicker">One last thing...</div><span class="gift">🎁</span><h2 style="font-size:clamp(42px,7vw,68px);font-family:'Cormorant Garamond',serif;font-weight:500;color:#ffe8f1">A gift for my favourite person</h2><p class="intro">Ready, princess? This one comes with a hug.</p><button class="btn" id="reveal">Open your surprise ♡</button></section>
 <footer class="footer">MADE OF STARDUST, TEDDY HUGS & A WHOLE LOT OF LOVE · FOR RIDDHI ♡</footer></div>
@@ -163,23 +167,29 @@ function openLoveLetter(){document.getElementById('envelope').classList.add('ope
 document.getElementById('envelope').addEventListener('click',openLoveLetter);document.getElementById('openLetter').addEventListener('click',openLoveLetter);
 document.querySelectorAll('[data-hug]').forEach(b=>b.addEventListener('click',()=>{document.getElementById('wishResult').textContent=b.dataset.hug;chime()}));
 
-// Personal soundtrack slots: no external songs are preloaded.
-const princessSongs=[1,2,3,4].map(n=>({title:'Your song '+n,artist:'Waiting for your chosen track',src:''}));
-const songAudio=document.getElementById('songAudio');let activeSong=-1;
-function chooseSong(index,autoplay=true){
+// Three requested tracks, played through their official YouTube uploads.
+const princessSongs=[
+ {title:'Tera Deedar Hua',artist:'Javed Ali · Jannat 2',video:'WsjDqz-tT6g'},
+ {title:'Shape of You',artist:'Ed Sheeran',video:'JGwWNGJdvx8'},
+ {title:'Agar Tum Saath Ho',artist:'Alka Yagnik & Arijit Singh · Tamasha',video:'6SGRn9OHtFY'}
+];
+let activeSong=-1,playing=false;
+const youtubeFrame=document.getElementById('youtubeFrame');
+function loadSong(index,autoplay=true){
  activeSong=(index+princessSongs.length)%princessSongs.length;
  const song=princessSongs[activeSong];
  document.getElementById('songTitle').textContent=song.title;
- document.getElementById('songArtist').textContent='Add your chosen MP3 to make this play ♡';
- document.querySelectorAll('.song-card').forEach((card,i)=>card.classList.toggle('active',i===activeSong));
- songAudio.pause();songAudio.removeAttribute('src');songAudio.load();
- document.getElementById('toggleSong').textContent='▶';
- document.getElementById('vinylDisc').classList.remove('spinning');
+ document.getElementById('songArtist').textContent=song.artist+' ♡';
+ document.querySelectorAll('.song-card').forEach((card,i)=>{card.classList.toggle('active',i===activeSong);card.querySelector('.song-play').textContent=i===activeSong&&playing?'Ⅱ':'▶'});
+ document.getElementById('toggleSong').textContent=autoplay?'Ⅱ':'▶';
+ document.getElementById('vinylDisc').classList.toggle('spinning',autoplay);
+ playing=autoplay;
+ youtubeFrame.innerHTML='<iframe title="'+song.title+' — YouTube" src="https://www.youtube-nocookie.com/embed/'+song.video+'?autoplay='+(autoplay?'1':'0')+'&rel=0&playsinline=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>';
 }
-document.querySelectorAll('.song-card').forEach(card=>card.addEventListener('click',()=>chooseSong(Number(card.dataset.song),false)));
-document.getElementById('toggleSong').addEventListener('click',()=>{if(activeSong<0)chooseSong(0,false);else{document.getElementById('songArtist').textContent='This song space is waiting for your MP3 ♡';chime()}});
-document.getElementById('prevSong').addEventListener('click',()=>chooseSong(activeSong<=0?princessSongs.length-1:activeSong-1,false));
-document.getElementById('nextSong').addEventListener('click',()=>chooseSong(activeSong+1,false));
+document.querySelectorAll('.song-card').forEach(card=>card.addEventListener('click',()=>loadSong(Number(card.dataset.song),true)));
+document.getElementById('toggleSong').addEventListener('click',()=>{if(activeSong<0){loadSong(0,true);return}loadSong(activeSong,!playing)});
+document.getElementById('prevSong').addEventListener('click',()=>loadSong(activeSong<=0?princessSongs.length-1:activeSong-1,true));
+document.getElementById('nextSong').addEventListener('click',()=>loadSong(activeSong+1,true));
 </script>
 <div id="photoLightbox" role="dialog" aria-modal="true" aria-label="Riddhi photo viewer"><button id="closePhoto" aria-label="Close photo">×</button><div><img id="lightboxImage" alt="Riddhi"><p id="lightboxCaption">A lovely moment ♡</p></div></div>
 <button id="backToTop" aria-label="Back to top">↑</button>
