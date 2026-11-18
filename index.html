@@ -17,7 +17,7 @@
 <header class="topbar"><div class="brand">A LITTLE WORLD FOR RIDDHI ✧</div><button class="sound" id="soundBtn" aria-label="Toggle sound">♫ <span id="soundLabel">Sound off</span></button></header>
 <section class="hero"><div class="hero-inner"><div class="crown">👑</div><div class="eyebrow">A tiny universe, made with love</div><h1>For my <em>Princess</em><br>Riddhi</h1><p class="sub">If the stars could write a story, I would ask them to write yours in every constellation. Tonight, this little world is all yours.</p><div class="actions"><button class="btn" onclick="goTo('letter')">Open your letter ♡</button><button class="btn ghost" onclick="goTo('surprise')">A little surprise ✨</button></div></div><div class="scroll">SCROLL TO EXPLORE ↓</div></section>
 <section class="section"><div class="kicker">A royal reminder</div><h2>Things you should never forget</h2><p class="intro">Not because a website says so. Because someone wants you to remember how precious you are.</p><div class="grid"><article class="tile"><div class="emoji">🌷</div><h3>You are one of a kind</h3><p>There is no second version of you. Never let the world make you feel ordinary.</p></article><article class="tile"><div class="emoji">🧸</div><h3>You deserve softness</h3><p>On the loud days and the quiet ones, may life always be gentle with your heart.</p></article><article class="tile"><div class="emoji">✨</div><h3>Keep shining</h3><p>Your dreams matter. Your smile matters. And you deserve all the beautiful things ahead.</p></article></div></section>
-<section class="section" id="letter"><div class="kicker">Sealed with a thousand little kisses</div><h2>A letter, just for you</h2><div class="letter-wrap"><h2>My dearest Riddhi,</h2><div class="letter">I wanted to make you something that you could open and feel a little warmth, even on a day when I am not right beside you.
+<section class="section" id="letter"><div class="kicker">Sealed with a thousand little kisses</div><h2>A letter, just for you</h2><p class="intro">A little envelope has been waiting for you. Tap the seal to open it. 💌</p><div class="envelope-area"><div class="envelope" id="envelope" role="button" tabindex="0" aria-label="Open letter"><span class="seal">💗</span></div><button class="btn" id="openLetter">Break the seal ♡</button></div><div class="letter-wrap sealed" id="loveLetter"><h2>My dearest Riddhi,</h2><div class="letter">I wanted to make you something that you could open and feel a little warmth, even on a day when I am not right beside you.
 
 I don't think one letter could ever explain what you mean to me. You are not just someone I talk to; you are someone whose presence makes the ordinary feel a little more special. Even the smallest moments can become precious when they have you in them.
 
@@ -29,7 +29,7 @@ Keep that beautiful heart safe. Keep dreaming. Keep being wonderfully you.
 
 And whenever you need a little reminder: somewhere, someone is smiling just because you exist.
 
-Happy Princess Day, my favourite girl. ♡</div><div class="sign">With all my love, always ♡</div></div><div class="teddy-row"><span class="teddy">🧸</span><span class="teddy">🎀</span><span class="teddy">🧸</span></div></section>
+Happy Princess Day, my favourite girl. ♡</div><div class="sign">With all my love, always ♡</div></div><div class="teddy-row"><span class="teddy">🧸</span><span class="teddy">🎀</span><span class="teddy">🧸</span></div><div class="kicker">Choose a teddy hug</div><div class="teddy-row"><button class="teddy-button" data-hug="A warm, squishy hug just for you!"><span class="bear">🧸</span><small>Warm hug</small></button><button class="teddy-button" data-hug="A tiny kiss on your forehead. Mwah!"><span class="bear">🐻</span><small>Forehead kiss</small></button><button class="teddy-button" data-hug="A pocket full of courage for your biggest dreams!"><span class="bear">🐼</span><small>Cheer squad</small></button></div><div id="wishResult">Tap a teddy to collect a little love ♡</div></section>
 <section class="section"><div class="kicker">A little scrapbook</div><h2>Our little universe</h2><p class="intro">A few spaces for the moments only we know. Tap no buttons, make no edits—just imagine these filled with our favourite memories.</p><div class="memory"><div class="memory-card"><div><div style="font-size:38px">💗</div><b>Our favourite moment</b><br><small>A memory worth keeping forever</small></div></div><div class="memory-card"><div><div style="font-size:38px">🌙</div><b>Our late-night talks</b><br><small>Even time feels too short</small></div></div><div class="memory-card"><div><div style="font-size:38px">🌸</div><b>Our little traditions</b><br><small>The small things mean the most</small></div></div></div></section>
 <section class="surprise" id="surprise"><div class="kicker">One last thing...</div><span class="gift">🎁</span><h2 style="font-size:clamp(42px,7vw,68px);font-family:'Cormorant Garamond',serif;font-weight:500;color:#ffe8f1">A gift for my favourite person</h2><p class="intro">Ready, princess? This one comes with a hug.</p><button class="btn" id="reveal">Open your surprise ♡</button></section>
 <footer class="footer">MADE OF STARDUST, TEDDY HUGS & A WHOLE LOT OF LOVE · FOR RIDDHI ♡</footer></div>
@@ -47,4 +47,25 @@ function petal(){const p=document.createElement('div');p.className='petal';p.tex
 setInterval(()=>{if(Math.random()>.35)petal()},1400);
 document.addEventListener('click',e=>{if(e.target.closest('button')){tone(523,.12,'triangle',.018);tone(659,.18,'triangle',.014,.07)}});
 </script>
-</body></html>
+
+<style>
+#introCurtain{position:fixed;inset:0;z-index:50;display:grid;place-items:center;text-align:center;background:radial-gradient(circle at 50% 35%,#693253,#1a0921 70%);transition:opacity 1s,visibility 1s}
+#introCurtain.hide{opacity:0;visibility:hidden;pointer-events:none}
+.curtain-inner{padding:28px}.curtain-crown{font-size:76px;animation:float 2.5s infinite}.curtain-inner h2{font-size:clamp(42px,8vw,76px);color:#ffe8f1;margin:15px 0}
+.envelope-area{margin:35px auto;max-width:620px}.envelope{position:relative;width:min(280px,75vw);height:180px;margin:20px auto;background:linear-gradient(145deg,#f8c7dc,#e99abb);border-radius:8px;box-shadow:0 18px 45px #0005;cursor:pointer}
+.envelope:after{content:"";position:absolute;left:0;right:0;top:0;margin:auto;border-left:140px solid transparent;border-right:140px solid transparent;border-top:105px solid #fce0eb;transform-origin:top;transition:transform .7s}
+.envelope.open:after{transform:rotateX(180deg)}.seal{position:absolute;z-index:2;left:50%;top:55%;transform:translate(-50%,-50%);font-size:36px}
+#loveLetter{transition:opacity .5s,filter .5s,transform .5s}.sealed{opacity:.12;filter:blur(5px);transform:scale(.98);pointer-events:none}.unsealed{opacity:1;filter:none;transform:scale(1)}
+.teddy-button{border:1px solid #ffd4e544;background:#ffffff0c;border-radius:22px;padding:15px 20px;color:#ffe8f1;min-width:112px}.teddy-button .bear{font-size:42px;display:block}
+#wishResult{min-height:36px;color:#ffe0ec;font-family:'Cormorant Garamond',serif;font-size:24px;margin:18px auto}
+@media(max-width:700px){.envelope:after{border-left-width:37vw;border-right-width:37vw}}
+</style>
+<div id="introCurtain"><div class="curtain-inner"><div class="curtain-crown">👑</div><div class="eyebrow">A royal invitation</div><h2>For Princess Riddhi</h2><p>A little world made just for you</p><button class="btn" id="enterWorld">Enter your fairytale ✨</button></div></div>
+<script>
+document.getElementById('enterWorld').addEventListener('click',()=>{document.getElementById('introCurtain').classList.add('hide');chime()});
+</script>
+<script>
+function openLoveLetter(){document.getElementById('envelope').classList.add('open');document.getElementById('loveLetter').classList.remove('sealed');document.getElementById('loveLetter').classList.add('unsealed');document.getElementById('openLetter').textContent='Your letter is open ♡';chime();setTimeout(()=>document.getElementById('loveLetter').scrollIntoView({behavior:'smooth',block:'center'}),350)}
+document.getElementById('envelope').addEventListener('click',openLoveLetter);document.getElementById('openLetter').addEventListener('click',openLoveLetter);
+document.querySelectorAll('[data-hug]').forEach(b=>b.addEventListener('click',()=>{document.getElementById('wishResult').textContent=b.dataset.hug;chime()}));
+</script></body></html>
