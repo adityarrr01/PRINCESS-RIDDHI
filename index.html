@@ -38,7 +38,9 @@ Happy Princess Day, my favourite girl. ♡</div><div class="sign">With all my lo
 let audioCtx=null, soundOn=false;
 function tone(freq,duration,type='sine',volume=.035,delay=0){if(!soundOn)return;try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type;o.frequency.setValueAtTime(freq,audioCtx.currentTime+delay);g.gain.setValueAtTime(volume,audioCtx.currentTime+delay);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+delay+duration);o.connect(g);g.connect(audioCtx.destination);o.start(audioCtx.currentTime+delay);o.stop(audioCtx.currentTime+delay+duration)}catch(e){}}
 function chime(){tone(659,.35,'sine',.04);tone(784,.4,'sine',.035,.12);tone(988,.55,'sine',.03,.25)}
-document.getElementById('soundBtn').addEventListener('click',()=>{soundOn=!soundOn;document.getElementById('soundLabel').textContent=soundOn?'Sound on':'Sound off';if(soundOn){audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();chime()}});
+let musicTimer=null,musicIndex=0;
+function musicNote(){if(!soundOn||!audioCtx)return;const melody=[523.25,659.25,783.99,659.25,587.33,698.46,880,698.46];const n=melody[musicIndex++%melody.length];tone(n,.8,'sine',.009);tone(n*1.5,.55,'sine',.003,.08)}
+document.getElementById('soundBtn').addEventListener('click',()=>{soundOn=!soundOn;document.getElementById('soundLabel').textContent=soundOn?'Sound on':'Sound off';if(soundOn){audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();audioCtx.resume();chime();if(!musicTimer)musicTimer=setInterval(musicNote,900)}else if(musicTimer){clearInterval(musicTimer);musicTimer=null}});
 function goTo(id){document.getElementById(id).scrollIntoView({behavior:'smooth'});chime()}
 document.getElementById('reveal').addEventListener('click',()=>{document.getElementById('modal').classList.add('show');chime();for(let i=0;i<22;i++)setTimeout(petal,i*75)});
 document.getElementById('close').addEventListener('click',()=>document.getElementById('modal').classList.remove('show'));
