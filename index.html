@@ -54,6 +54,16 @@
 .youtube-frame iframe{width:100%;height:100%;border:0;display:block}
 .youtube-placeholder{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;color:#ffe4ee}
 .youtube-placeholder span{font-size:48px}.youtube-placeholder b{font-family:'Cormorant Garamond',serif;font-size:27px;font-weight:500}.youtube-placeholder small{font-size:11px;color:#d9bdcd}
+.ourflix-player{max-width:700px;margin:28px auto 22px;padding:22px 24px;border:1px solid #f7d99a66;border-radius:24px;background:linear-gradient(135deg,#492044dd,#211027ee);box-shadow:0 18px 55px #0006;text-align:left}
+.ourflix-now{display:flex;align-items:center;gap:17px}.ourflix-art{width:82px;height:82px;flex:0 0 82px;border-radius:16px;display:grid;place-items:center;font-size:40px;background:radial-gradient(circle at 30% 25%,#b66c94,#502344 65%,#211027);border:1px solid #f7d99a77;box-shadow:0 8px 24px #0005}
+.ourflix-meta{display:flex;flex-direction:column;gap:4px;min-width:0}.ourflix-meta small{font-size:9px;letter-spacing:2px;color:#f7d99a}.ourflix-meta b{font-family:'Cormorant Garamond',serif;font-size:27px;font-weight:500;color:#fff0f5}.ourflix-meta span{font-size:12px;color:#d9bdcd}
+.ourflix-progress{display:flex;align-items:center;gap:12px;margin:22px 0 14px;color:#d9bdcd;font-size:10px;font-variant-numeric:tabular-nums}
+.ourflix-progress input,.volume-control input{accent-color:#f7b7d4;cursor:pointer;min-width:0}
+.ourflix-progress input{flex:1}
+.ourflix-controls{display:flex;align-items:center;justify-content:center;gap:16px}.ourflix-controls button{width:42px;height:42px;border-radius:50%;border:1px solid #ffd4e566;background:#ffffff12;color:#ffe8f1;font-size:16px}.ourflix-controls .main-play{width:52px;height:52px;background:linear-gradient(120deg,#f9b4d1,#f7d99a);color:#38152f;border:0;font-weight:800;font-size:19px}
+.volume-control{display:flex;align-items:center;gap:7px;margin-left:18px;font-size:14px}.volume-control input{width:82px}
+.song-card.active{border-color:#f7d99a;background:#ffffff1c}.song-card.active .album-art{box-shadow:0 0 0 2px #f7d99a66,0 0 24px #f7b7d455}
+@media(max-width:700px){.ourflix-player{padding:17px}.ourflix-art{width:65px;height:65px;flex-basis:65px}.ourflix-meta b{font-size:22px}.ourflix-controls{gap:10px}.volume-control{margin-left:4px}.volume-control input{width:58px}}
 </style></head>
 <body>
 <div id="readingProgress"></div><div class="sky"></div><div class="wrap">
@@ -113,19 +123,26 @@ Happy Princess Day, my favourite girl. ♡</div><div class="sign">With all my lo
 <div class="photo-slot"><img src="https://raw.githubusercontent.com/adityarrr01/my-riddhi/main/assets/riddhi-12.jpg" alt="Riddhi photo 12" loading="lazy"><div class="photo-placeholder"><span>💗</span><b>Riddhi's moment 12</b><small>A little piece of magic</small></div></div>
 </div></section>
 <section class="section" id="our-songs">
-<div class="kicker">Our soundtrack</div><h2>Three songs, a thousand feelings</h2>
-<p class="intro">A little soundtrack for my princess — every song chosen with you in mind. Tap a song and let it play right here. 🎧♡</p>
-<div class="song-player">
-<div class="vinyl" id="vinylDisc">♫</div><div class="now-playing"><small>NOW PLAYING</small><b id="songTitle">Choose a song, princess</b><span id="songArtist">Your little love soundtrack ♡</span></div>
-<div class="player-controls"><button id="prevSong" aria-label="Previous song">⏮</button><button id="toggleSong" aria-label="Play selected song">▶</button><button id="nextSong" aria-label="Next song">⏭</button></div>
+<div class="kicker">Our original soundtrack</div><h2>Three songs, one little world</h2>
+<p class="intro">A tiny music collection, styled like our own private streaming corner. Pick a track and control it right here. ♡</p>
+<div class="ourflix-player">
+ <div class="ourflix-now">
+  <div class="ourflix-art" id="currentArt">🌹</div>
+  <div class="ourflix-meta"><small>NOW PLAYING</small><b id="songTitle">Choose your first song</b><span id="songArtist">Made for Princess Riddhi ♡</span></div>
+ </div>
+ <div class="ourflix-progress"><span id="currentTime">0:00</span><input id="songSeek" type="range" min="0" max="1000" value="0" aria-label="Seek through song"><span id="duration">0:00</span></div>
+ <div class="ourflix-controls">
+  <button id="prevSong" aria-label="Previous song">⏮</button><button id="toggleSong" class="main-play" aria-label="Play or pause">▶</button><button id="nextSong" aria-label="Next song">⏭</button>
+  <label class="volume-control">🔊 <input id="songVolume" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Volume"></label>
+ </div>
+ <audio id="songAudio" preload="metadata"></audio>
 </div>
-<div class="youtube-frame" id="youtubeFrame"><div class="youtube-placeholder"><span>🎶</span><b>Your soundtrack is waiting</b><small>Choose one of the songs below ♡</small></div></div>
 <div class="song-grid">
-<button class="song-card" data-song="0"><span class="album-art">🌹</span><span class="song-meta"><b>Tera Deedar Hua</b><small>Javed Ali · Jannat 2</small></span><span class="song-play">▶</span></button>
-<button class="song-card" data-song="1"><span class="album-art">💃</span><span class="song-meta"><b>Shape of You</b><small>Ed Sheeran</small></span><span class="song-play">▶</span></button>
-<button class="song-card" data-song="2"><span class="album-art">🌙</span><span class="song-meta"><b>Agar Tum Saath Ho</b><small>Alka Yagnik &amp; Arijit Singh</small></span><span class="song-play">▶</span></button>
+ <button class="song-card" data-song="0"><span class="album-art">🌹</span><span class="song-meta"><b>Tera Deedar Hua</b><small>Javed Ali · Jannat 2</small></span><span class="song-play">▶</span></button>
+ <button class="song-card" data-song="1"><span class="album-art">💃</span><span class="song-meta"><b>Shape of You</b><small>Ed Sheeran</small></span><span class="song-play">▶</span></button>
+ <button class="song-card" data-song="2"><span class="album-art">🌙</span><span class="song-meta"><b>Agar Tum Saath Ho</b><small>Alka Yagnik &amp; Arijit Singh</small></span><span class="song-play">▶</span></button>
 </div>
-<p class="tiny">Official YouTube videos play here. No OURFLIX audio files are used. ♡</p>
+<p class="tiny" id="songStatus">Add the three MP3 files to the soundtrack folder to enable playback. No OURFLIX audio is reused. ♡</p>
 </section>
 <section class="surprise" id="surprise"><div class="kicker">One last thing...</div><span class="gift">🎁</span><h2 style="font-size:clamp(42px,7vw,68px);font-family:'Cormorant Garamond',serif;font-weight:500;color:#ffe8f1">A gift for my favourite person</h2><p class="intro">Ready, princess? This one comes with a hug.</p><button class="btn" id="reveal">Open your surprise ♡</button></section>
 <footer class="footer">MADE OF STARDUST, TEDDY HUGS & A WHOLE LOT OF LOVE · FOR RIDDHI ♡</footer></div>
@@ -167,29 +184,33 @@ function openLoveLetter(){document.getElementById('envelope').classList.add('ope
 document.getElementById('envelope').addEventListener('click',openLoveLetter);document.getElementById('openLetter').addEventListener('click',openLoveLetter);
 document.querySelectorAll('[data-hug]').forEach(b=>b.addEventListener('click',()=>{document.getElementById('wishResult').textContent=b.dataset.hug;chime()}));
 
-// Three requested tracks, played through their official YouTube uploads.
+// OURFLIX-inspired in-page player. Track files are kept separate from the old OURFLIX project.
 const princessSongs=[
- {title:'Tera Deedar Hua',artist:'Jannat 2 · Pritam',video:'WsjDqz-tT6g'},
- {title:'Shape of You',artist:'Ed Sheeran',video:'JGwWNGJdvx8'},
- {title:'Agar Tum Saath Ho',artist:'Alka Yagnik & Arijit Singh · Tamasha',video:'6SGRn9OHtFY'}
+ {title:'Tera Deedar Hua',artist:'Javed Ali · Jannat 2',src:'assets/audio/tera-deedar-hua.mp3',art:'🌹'},
+ {title:'Shape of You',artist:'Ed Sheeran',src:'assets/audio/shape-of-you.mp3',art:'💃'},
+ {title:'Agar Tum Saath Ho',artist:'Alka Yagnik & Arijit Singh',src:'assets/audio/agar-tum-saath-ho.mp3',art:'🌙'}
 ];
-let activeSong=-1,playing=false;
-const youtubeFrame=document.getElementById('youtubeFrame');
-function loadSong(index,autoplay=true){
- activeSong=(index+princessSongs.length)%princessSongs.length;
- const song=princessSongs[activeSong];
- document.getElementById('songTitle').textContent=song.title;
- document.getElementById('songArtist').textContent=song.artist+' ♡';
- document.querySelectorAll('.song-card').forEach((card,i)=>{card.classList.toggle('active',i===activeSong);card.querySelector('.song-play').textContent=i===activeSong&&playing?'Ⅱ':'▶'});
- document.getElementById('toggleSong').textContent=autoplay?'Ⅱ':'▶';
- document.getElementById('vinylDisc').classList.toggle('spinning',autoplay);
- playing=autoplay;
- youtubeFrame.innerHTML='<iframe title="'+song.title+' — YouTube" src="https://www.youtube-nocookie.com/embed/'+song.video+'?autoplay='+(autoplay?'1':'0')+'&rel=0&playsinline=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>';
+const songAudio=document.getElementById('songAudio');let activeSong=-1;
+const fmtSongTime=t=>{if(!Number.isFinite(t))return '0:00';const m=Math.floor(t/60),s=Math.floor(t%60);return m+':'+String(s).padStart(2,'0')};
+function chooseSong(index,autoplay=true){
+ activeSong=(index+princessSongs.length)%princessSongs.length;const song=princessSongs[activeSong];
+ document.getElementById('songTitle').textContent=song.title;document.getElementById('songArtist').textContent=song.artist+' ♡';document.getElementById('currentArt').textContent=song.art;
+ document.querySelectorAll('.song-card').forEach((card,i)=>{card.classList.toggle('active',i===activeSong);card.querySelector('.song-play').textContent=i===activeSong&&!songAudio.paused?'Ⅱ':'▶'});
+ songAudio.pause();songAudio.src=song.src;songAudio.load();document.getElementById('songSeek').value=0;document.getElementById('currentTime').textContent='0:00';document.getElementById('duration').textContent='0:00';document.getElementById('toggleSong').textContent='▶';
+ if(autoplay){const p=songAudio.play();if(p&&p.catch)p.catch(()=>{document.getElementById('songStatus').textContent='Track file not found yet — add '+song.src+' to the project to play it. ♡';});}
 }
-document.querySelectorAll('.song-card').forEach(card=>card.addEventListener('click',()=>loadSong(Number(card.dataset.song),true)));
-document.getElementById('toggleSong').addEventListener('click',()=>{if(activeSong<0){loadSong(0,true);return}loadSong(activeSong,!playing)});
-document.getElementById('prevSong').addEventListener('click',()=>loadSong(activeSong<=0?princessSongs.length-1:activeSong-1,true));
-document.getElementById('nextSong').addEventListener('click',()=>loadSong(activeSong+1,true));
+document.querySelectorAll('.song-card').forEach(card=>card.addEventListener('click',()=>chooseSong(Number(card.dataset.song),true)));
+document.getElementById('toggleSong').addEventListener('click',()=>{if(activeSong<0){chooseSong(0,true);return}if(songAudio.paused){songAudio.play().catch(()=>{document.getElementById('songStatus').textContent='The selected MP3 has not been added yet. ♡'})}else songAudio.pause()});
+document.getElementById('prevSong').addEventListener('click',()=>chooseSong(activeSong<=0?princessSongs.length-1:activeSong-1,true));
+document.getElementById('nextSong').addEventListener('click',()=>chooseSong(activeSong+1,true));
+songAudio.addEventListener('play',()=>{document.getElementById('toggleSong').textContent='Ⅱ';document.querySelectorAll('.song-card')[activeSong]?.classList.add('active');document.getElementById('songStatus').textContent='Now playing — enjoy your little soundtrack ♡';document.querySelectorAll('.song-card')[activeSong]?.querySelector('.song-play').textContent='Ⅱ'});
+songAudio.addEventListener('pause',()=>{document.getElementById('toggleSong').textContent='▶';if(activeSong>=0)document.querySelectorAll('.song-card')[activeSong].querySelector('.song-play').textContent='▶'});
+songAudio.addEventListener('loadedmetadata',()=>{document.getElementById('duration').textContent=fmtSongTime(songAudio.duration)});
+songAudio.addEventListener('timeupdate',()=>{document.getElementById('currentTime').textContent=fmtSongTime(songAudio.currentTime);document.getElementById('songSeek').value=songAudio.duration?songAudio.currentTime/songAudio.duration*1000:0});
+document.getElementById('songSeek').addEventListener('input',e=>{if(songAudio.duration)songAudio.currentTime=(Number(e.target.value)/1000)*songAudio.duration});
+document.getElementById('songVolume').addEventListener('input',e=>{songAudio.volume=Number(e.target.value)});
+songAudio.volume=.8;songAudio.addEventListener('ended',()=>chooseSong(activeSong+1,true));
+songAudio.addEventListener('error',()=>{if(activeSong>=0)document.getElementById('songStatus').textContent='MP3 not added yet: '+princessSongs[activeSong].src+' — upload your chosen track to enable playback. ♡'});
 </script>
 <div id="photoLightbox" role="dialog" aria-modal="true" aria-label="Riddhi photo viewer"><button id="closePhoto" aria-label="Close photo">×</button><div><img id="lightboxImage" alt="Riddhi"><p id="lightboxCaption">A lovely moment ♡</p></div></div>
 <button id="backToTop" aria-label="Back to top">↑</button>
