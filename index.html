@@ -21,9 +21,37 @@
 .now-playing{display:flex;flex-direction:column;gap:4px;min-width:0;flex:1}.now-playing small{font-size:9px;letter-spacing:2px;color:#f7d99a}.now-playing b{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:500;color:#fff0f5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.now-playing span{font-size:12px;color:#d9bdcd}.player-controls{display:flex;gap:8px;align-items:center}.player-controls button,.song-play{border:1px solid #ffd4e566;background:#ffffff12;color:#ffe8f1;border-radius:50%;width:38px;height:38px}.player-controls #toggleSong{background:linear-gradient(120deg,#f9b4d1,#f7d99a);color:#38152f;width:46px;height:46px;font-weight:700}.song-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;max-width:700px;margin:0 auto}.song-card{display:flex;align-items:center;gap:13px;text-align:left;padding:13px;border:1px solid #ffd4e544;border-radius:18px;background:#ffffff0b;color:#fff0f5;transition:.25s}.song-card:hover,.song-card.active{transform:translateY(-3px);border-color:#f7d99a;background:#ffffff14}.album-art{width:56px;height:56px;flex:0 0 56px;border-radius:13px;display:grid;place-items:center;font-size:27px;color:#f7d99a;background:radial-gradient(circle at 35% 30%,#9b587e,#42203e 65%,#24102e)}.song-meta{display:flex;flex-direction:column;gap:4px;flex:1;min-width:0}.song-meta b{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500}.song-meta small{font-size:11px;color:#d9bdcd}.song-play{display:grid;place-items:center;flex:0 0 34px;width:34px;height:34px}
 @media(max-width:700px){.photo-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.song-player{flex-wrap:wrap;padding:16px}.player-controls{margin-left:auto}.song-grid{grid-template-columns:1fr}}
 </style>
-</head>
+<style>
+/* Celestial experience polish */
+:root{scroll-padding-top:78px}
+#readingProgress{position:fixed;top:0;left:0;width:0;height:3px;background:linear-gradient(90deg,#ffb7d5,#f7d99a,#fff0f5);z-index:80;box-shadow:0 0 14px #ffb7d5}
+.section,.surprise{content-visibility:auto;contain-intrinsic-size:650px}
+.reveal-on-scroll{opacity:0;transform:translateY(28px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
+.reveal-on-scroll.is-visible{opacity:1;transform:translateY(0)}
+.heaven-garden{position:relative;max-width:850px;margin:34px auto 0;padding:30px 20px 36px;border:1px solid #ffd4e544;border-radius:30px;background:radial-gradient(ellipse at 50% 0%,#a45b8240,transparent 65%),#ffffff08;overflow:hidden}
+.wish-orb{display:inline-grid;place-items:center;width:82px;height:82px;margin:10px;border-radius:50%;border:1px solid #f7d99a88;background:radial-gradient(circle at 35% 25%,#ffe6f1,#d77da8 45%,#6b315e 80%);font-size:34px;box-shadow:0 0 35px #f7a9ce44;transition:.35s;cursor:pointer}
+.wish-orb:hover{transform:translateY(-9px) scale(1.08);box-shadow:0 0 45px #f7a9ce88}
+#wishGardenMessage{min-height:58px;margin:18px auto 0;max-width:560px;color:#ffe5f0;font-family:'Cormorant Garamond',serif;font-size:clamp(22px,3vw,29px);line-height:1.35}
+.star-choice-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:760px;margin:28px auto 0}
+.star-choice{border:1px solid #ffd4e555;border-radius:20px;padding:22px 12px;background:linear-gradient(145deg,#ffffff12,#ffffff05);color:#ffe8f1;min-height:150px;transition:.3s}
+.star-choice:hover{transform:translateY(-6px);border-color:#f7d99a;box-shadow:0 14px 30px #0003}
+.star-choice span{display:block;font-size:34px;margin-bottom:12px}.star-choice b{font-family:'Cormorant Garamond',serif;font-size:23px;font-weight:500}
+#starAnswer{min-height:45px;margin:20px auto 0;color:#f7d99a;font-family:'Cormorant Garamond',serif;font-size:25px}
+#photoLightbox{position:fixed;inset:0;z-index:70;background:#100817f2;display:none;place-items:center;padding:22px;backdrop-filter:blur(12px)}
+#photoLightbox.open{display:grid}
+#photoLightbox img{max-width:min(92vw,780px);max-height:82vh;object-fit:contain;border-radius:18px;box-shadow:0 25px 90px #000a}
+#photoLightbox button{position:absolute;top:22px;right:22px;border:1px solid #fff6;background:#ffffff18;color:white;border-radius:50%;width:44px;height:44px;font-size:24px}
+#photoLightbox p{color:#ffe8f1;text-align:center;margin:12px 0 0;font-family:'Cormorant Garamond',serif;font-size:23px}
+.photo-slot{cursor:zoom-in}
+#backToTop{position:fixed;right:18px;bottom:18px;z-index:15;width:44px;height:44px;border-radius:50%;border:1px solid #f7d99a77;background:#31162fe8;color:#ffe8f1;font-size:19px;opacity:0;pointer-events:none;transform:translateY(10px);transition:.3s;backdrop-filter:blur(8px)}
+#backToTop.visible{opacity:1;pointer-events:auto;transform:translateY(0)}
+.sparkle-burst{position:fixed;z-index:75;pointer-events:none;font-size:20px;animation:sparklePop 900ms ease-out forwards}
+@keyframes sparklePop{0%{opacity:0;transform:translate(0,0) scale(.3)}20%{opacity:1}100%{opacity:0;transform:translate(var(--sx),var(--sy)) scale(1.3) rotate(35deg)}}
+@media(max-width:700px){.star-choice-grid{grid-template-columns:1fr}.star-choice{min-height:0;padding:17px}.wish-orb{width:70px;height:70px}}
+@media(prefers-reduced-motion:reduce){.reveal-on-scroll{opacity:1;transform:none}#backToTop{transition:none}}
+</style></head>
 <body>
-<div class="sky"></div><div class="wrap">
+<div id="readingProgress"></div><div class="sky"></div><div class="wrap">
 <header class="topbar"><div class="brand">A LITTLE WORLD FOR RIDDHI ✧</div><button class="sound" id="soundBtn" aria-label="Toggle sound">♫ <span id="soundLabel">Sound off</span></button></header>
 <section class="hero"><div class="hero-inner"><div class="crown">👑</div><div class="eyebrow">A tiny universe, made with love</div><h1>For my <em>Princess</em><br>Riddhi</h1><p class="sub">If the stars could write a story, I would ask them to write yours in every constellation. Tonight, this little world is all yours.</p><div class="actions"><button class="btn" onclick="goTo('letter')">Open your letter ♡</button><button class="btn ghost" onclick="goTo('surprise')">A little surprise ✨</button></div></div><div class="scroll">SCROLL TO EXPLORE ↓</div></section>
 <section class="section"><div class="kicker">A royal reminder</div><h2>Things you should never forget</h2><p class="intro">Not because a website says so. Because someone wants you to remember how precious you are.</p><div class="grid"><article class="tile"><div class="emoji">🌷</div><h3>You are one of a kind</h3><p>There is no second version of you. Never let the world make you feel ordinary.</p></article><article class="tile"><div class="emoji">🧸</div><h3>You deserve softness</h3><p>On the loud days and the quiet ones, may life always be gentle with your heart.</p></article><article class="tile"><div class="emoji">✨</div><h3>Keep shining</h3><p>Your dreams matter. Your smile matters. And you deserve all the beautiful things ahead.</p></article></div></section>
@@ -40,7 +68,29 @@ Keep that beautiful heart safe. Keep dreaming. Keep being wonderfully you.
 And whenever you need a little reminder: somewhere, someone is smiling just because you exist.
 
 Happy Princess Day, my favourite girl. ♡</div><div class="sign">With all my love, always ♡</div></div><div class="teddy-row"><span class="teddy">🧸</span><span class="teddy">🎀</span><span class="teddy">🧸</span></div><div class="kicker">Choose a teddy hug</div><div class="teddy-row"><button class="teddy-button" data-hug="A warm, squishy hug just for you!"><span class="bear">🧸</span><small>Warm hug</small></button><button class="teddy-button" data-hug="A tiny kiss on your forehead. Mwah!"><span class="bear">🐻</span><small>Forehead kiss</small></button><button class="teddy-button" data-hug="A pocket full of courage for your biggest dreams!"><span class="bear">🐼</span><small>Cheer squad</small></button></div><div id="wishResult">Tap a teddy to collect a little love ♡</div></section>
-<section class="section" id="riddhi-gallery">
+
+<section class="section" id="wish-garden">
+ <div class="kicker">A garden that blooms for you</div><h2>Little wishes for my princess</h2>
+ <p class="intro">Tap a glowing flower. Each one holds a wish I hope life gives you, today and always. 🌷</p>
+ <div class="heaven-garden">
+  <button class="wish-orb" data-wish="May every morning bring you a reason to smile, and every night remind you how loved you are.">🌸</button>
+  <button class="wish-orb" data-wish="May your dreams grow bigger than your fears, and may you always find the courage to chase them.">🌼</button>
+  <button class="wish-orb" data-wish="May the world be gentle with your heart, and may you never settle for anything less than kindness.">🌷</button>
+  <button class="wish-orb" data-wish="May you always see the magic in yourself that everyone lucky enough to know you can see.">💐</button>
+  <div id="wishGardenMessage" aria-live="polite">Choose a flower to make a little wish bloom ♡</div>
+ </div>
+</section>
+<section class="section" id="little-stars">
+ <div class="kicker">A tiny princess game</div><h2>Choose a little star</h2>
+ <p class="intro">Three stars, three reminders. Pick whichever one is calling your name. ✨</p>
+ <div class="star-choice-grid">
+  <button class="star-choice" data-answer="You are allowed to take up space, ask for kindness, and be loved without having to earn it."><span>🌟</span><b>The golden star</b></button>
+  <button class="star-choice" data-answer="Even on the days you feel unsure, there is still so much beauty in the person you are becoming."><span>🌙</span><b>The moon star</b></button>
+  <button class="star-choice" data-answer="Your story is still unfolding. Keep your hopes high; some of the loveliest chapters are yet to come."><span>💫</span><b>The wishing star</b></button>
+ </div>
+ <div id="starAnswer" aria-live="polite">Your little message will appear here ♡</div>
+</section>
+\n<section class="section" id="riddhi-gallery">
 <div class="kicker">The girl in every constellation</div><h2>Riddhi's little gallery</h2>
 <p class="intro">A whole wall dedicated to the prettiest princess. Your photos will go here — no photos of Adi, only you, Riddhi. ♡</p>
 <div class="photo-grid">
@@ -121,4 +171,24 @@ function chooseSong(index,autoplay=true){activeSong=(index+princessSongs.length)
 document.querySelectorAll('.song-card').forEach(card=>card.addEventListener('click',()=>chooseSong(Number(card.dataset.song))));
 document.getElementById('toggleSong').addEventListener('click',()=>{if(activeSong<0){chooseSong(0);return}if(songAudio.paused){songAudio.play().then(()=>{document.getElementById('toggleSong').textContent='Ⅱ';document.getElementById('vinylDisc').classList.add('spinning')}).catch(()=>{})}else{songAudio.pause();document.getElementById('toggleSong').textContent='▶';document.getElementById('vinylDisc').classList.remove('spinning')}});
 document.getElementById('prevSong').addEventListener('click',()=>chooseSong(activeSong<=0?princessSongs.length-1:activeSong-1));document.getElementById('nextSong').addEventListener('click',()=>chooseSong(activeSong+1));songAudio.addEventListener('ended',()=>chooseSong(activeSong+1));
+</script>
+<div id="photoLightbox" role="dialog" aria-modal="true" aria-label="Riddhi photo viewer"><button id="closePhoto" aria-label="Close photo">×</button><div><img id="lightboxImage" alt="Riddhi"><p id="lightboxCaption">A lovely moment ♡</p></div></div>
+<button id="backToTop" aria-label="Back to top">↑</button>
+<script>
+(()=>{
+ const progress=document.getElementById('readingProgress'),topBtn=document.getElementById('backToTop');
+ const onScroll=()=>{const max=document.documentElement.scrollHeight-innerHeight;progress.style.width=(max>0?scrollY/max*100:0)+'%';topBtn.classList.toggle('visible',scrollY>550)};
+ addEventListener('scroll',onScroll,{passive:true});onScroll();
+ topBtn.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
+ const revealItems=document.querySelectorAll('.section,.surprise,.tile,.photo-slot,.song-card');
+ revealItems.forEach(el=>el.classList.add('reveal-on-scroll'));
+ if('IntersectionObserver'in window){const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('is-visible');io.unobserve(e.target)}}),{threshold:.08});revealItems.forEach(el=>io.observe(el))}else revealItems.forEach(el=>el.classList.add('is-visible'));
+ document.querySelectorAll('[data-wish]').forEach((b,i)=>b.addEventListener('click',()=>{document.getElementById('wishGardenMessage').textContent=b.dataset.wish;burst(b);}));
+ document.querySelectorAll('[data-answer]').forEach(b=>b.addEventListener('click',()=>{document.getElementById('starAnswer').textContent=b.dataset.answer;document.querySelectorAll('.star-choice').forEach(x=>x.style.borderColor='');b.style.borderColor='#f7d99a';burst(b)}));
+ const lightbox=document.getElementById('photoLightbox'),lightImg=document.getElementById('lightboxImage');
+ document.querySelectorAll('.photo-slot img').forEach(img=>img.addEventListener('click',()=>{if(img.complete&&img.naturalWidth){lightImg.src=img.src;lightbox.classList.add('open');document.body.style.overflow='hidden'}}));
+ function close(){lightbox.classList.remove('open');document.body.style.overflow='';lightImg.removeAttribute('src')}
+ document.getElementById('closePhoto').addEventListener('click',close);lightbox.addEventListener('click',e=>{if(e.target===lightbox)close()});addEventListener('keydown',e=>{if(e.key==='Escape')close()});
+ function burst(el){const r=el.getBoundingClientRect();for(let i=0;i<9;i++){const p=document.createElement('span');p.className='sparkle-burst';p.textContent=['✦','♡','✨','✧'][i%4];p.style.left=(r.left+r.width/2)+'px';p.style.top=(r.top+r.height/2)+'px';p.style.setProperty('--sx',(Math.random()*150-75)+'px');p.style.setProperty('--sy',(Math.random()*-130-15)+'px');document.body.appendChild(p);setTimeout(()=>p.remove(),950)}}
+})();
 </script></body></html>
