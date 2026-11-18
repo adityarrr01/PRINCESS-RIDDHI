@@ -109,19 +109,19 @@ Happy Princess Day, my favourite girl. ♡</div><div class="sign">With all my lo
 </div></section>
 <section class="section" id="our-songs">
 <div class="kicker">Our soundtrack</div><h2>Songs that feel like you</h2>
-<p class="intro">The same soundtrack from OURFLIX, brought into your Princess Day world. Pick a song and let it play. 🎧</p>
+<p class="intro">A little music corner reserved for the songs you choose for her. Add your favourite tracks whenever you're ready. 🎧</p>
 <div class="song-player">
 <div class="vinyl" id="vinylDisc">♫</div><div class="now-playing"><small>NOW PLAYING</small><b id="songTitle">Choose a song, princess</b><span id="songArtist">Your special soundtrack ♡</span></div>
 <div class="player-controls"><button id="prevSong" aria-label="Previous song">⏮</button><button id="toggleSong" aria-label="Play song">▶</button><button id="nextSong" aria-label="Next song">⏭</button></div>
 <audio id="songAudio" preload="none"></audio>
 </div>
 <div class="song-grid">
-<button class="song-card" data-song="0"><span class="album-art">♡</span><span class="song-meta"><b>Ourflix — Song 1</b><small>From our original soundtrack</small></span><span class="song-play">▶</span></button>
-<button class="song-card" data-song="1"><span class="album-art">♡</span><span class="song-meta"><b>Ourflix — Song 2</b><small>From our original soundtrack</small></span><span class="song-play">▶</span></button>
-<button class="song-card" data-song="2"><span class="album-art">♡</span><span class="song-meta"><b>Ourflix — Song 3</b><small>From our original soundtrack</small></span><span class="song-play">▶</span></button>
-<button class="song-card" data-song="3"><span class="album-art">♡</span><span class="song-meta"><b>Ourflix — Song 4</b><small>From our original soundtrack</small></span><span class="song-play">▶</span></button>
+<button class="song-card" data-song="0"><span class="album-art">♡</span><span class="song-meta"><b>Your song 1</b><small>Waiting for a special song ♡</small></span><span class="song-play">▶</span></button>
+<button class="song-card" data-song="1"><span class="album-art">♡</span><span class="song-meta"><b>Your song 2</b><small>Waiting for a special song ♡</small></span><span class="song-play">▶</span></button>
+<button class="song-card" data-song="2"><span class="album-art">♡</span><span class="song-meta"><b>Your song 3</b><small>Waiting for a special song ♡</small></span><span class="song-play">▶</span></button>
+<button class="song-card" data-song="3"><span class="album-art">♡</span><span class="song-meta"><b>Your song 4</b><small>Waiting for a special song ♡</small></span><span class="song-play">▶</span></button>
 </div>
-<p class="tiny">The four tracks are being streamed from your original OURFLIX collection. ♡</p>
+<p class="tiny">Your four personal song spaces are ready. No songs have been added yet. ♡</p>
 </section>
 <section class="surprise" id="surprise"><div class="kicker">One last thing...</div><span class="gift">🎁</span><h2 style="font-size:clamp(42px,7vw,68px);font-family:'Cormorant Garamond',serif;font-weight:500;color:#ffe8f1">A gift for my favourite person</h2><p class="intro">Ready, princess? This one comes with a hug.</p><button class="btn" id="reveal">Open your surprise ♡</button></section>
 <footer class="footer">MADE OF STARDUST, TEDDY HUGS & A WHOLE LOT OF LOVE · FOR RIDDHI ♡</footer></div>
@@ -156,21 +156,30 @@ document.addEventListener('click',e=>{if(e.target.closest('button')){tone(523,.1
 </style>
 <div id="introCurtain"><div class="curtain-inner"><div class="curtain-crown">👑</div><div class="eyebrow">A royal invitation</div><h2>For Princess Riddhi</h2><p>A little world made just for you</p><button class="btn" id="enterWorld">Enter your fairytale ✨</button></div></div>
 <script>
-const ourflixIntro=new Audio('https://raw.githubusercontent.com/adityarrr01/my-riddhi/main/assets/song-1.mp3');ourflixIntro.preload='auto';ourflixIntro.volume=.72;
-document.getElementById('enterWorld').addEventListener('click',()=>{document.getElementById('introCurtain').classList.add('hide');ourflixIntro.currentTime=0;ourflixIntro.play().catch(()=>chime())});
+document.getElementById('enterWorld').addEventListener('click',()=>{document.getElementById('introCurtain').classList.add('hide');chime()});
 </script>
 <script>
 function openLoveLetter(){document.getElementById('envelope').classList.add('open');document.getElementById('loveLetter').classList.remove('sealed');document.getElementById('loveLetter').classList.add('unsealed');document.getElementById('openLetter').textContent='Your letter is open ♡';chime();setTimeout(()=>document.getElementById('loveLetter').scrollIntoView({behavior:'smooth',block:'center'}),350)}
 document.getElementById('envelope').addEventListener('click',openLoveLetter);document.getElementById('openLetter').addEventListener('click',openLoveLetter);
 document.querySelectorAll('[data-hug]').forEach(b=>b.addEventListener('click',()=>{document.getElementById('wishResult').textContent=b.dataset.hug;chime()}));
 
-// Song-card player: replace the placeholder titles/artists and add MP3 files in assets/songs/.
-const princessSongs=[{"title":"Ourflix — Song 1","artist":"From our original soundtrack","src":"https://raw.githubusercontent.com/adityarrr01/my-riddhi/main/assets/song-2.mp3"},{"title":"Ourflix — Song 2","artist":"From our original soundtrack","src":"https://raw.githubusercontent.com/adityarrr01/my-riddhi/main/assets/song-3.mp3"},{"title":"Ourflix — Song 3","artist":"From our original soundtrack","src":"https://raw.githubusercontent.com/adityarrr01/my-riddhi/main/assets/song-4.mp3"},{"title":"Ourflix — Song 4","artist":"From our original soundtrack","src":"https://raw.githubusercontent.com/adityarrr01/my-riddhi/main/assets/song-5.mp3"}];
+// Personal soundtrack slots: no external songs are preloaded.
+const princessSongs=[1,2,3,4].map(n=>({title:'Your song '+n,artist:'Waiting for your chosen track',src:''}));
 const songAudio=document.getElementById('songAudio');let activeSong=-1;
-function chooseSong(index,autoplay=true){activeSong=(index+princessSongs.length)%princessSongs.length;const song=princessSongs[activeSong];document.getElementById('songTitle').textContent=song.title;document.getElementById('songArtist').textContent=song.artist;document.querySelectorAll('.song-card').forEach((card,i)=>card.classList.toggle('active',i===activeSong));songAudio.src=song.src;document.getElementById('toggleSong').textContent='▶';document.getElementById('vinylDisc').classList.remove('spinning');if(autoplay)songAudio.play().then(()=>{document.getElementById('toggleSong').textContent='Ⅱ';document.getElementById('vinylDisc').classList.add('spinning')}).catch(()=>{document.getElementById('songTitle').textContent=song.title+' — add its MP3 file';});}
-document.querySelectorAll('.song-card').forEach(card=>card.addEventListener('click',()=>chooseSong(Number(card.dataset.song))));
-document.getElementById('toggleSong').addEventListener('click',()=>{if(activeSong<0){chooseSong(0);return}if(songAudio.paused){songAudio.play().then(()=>{document.getElementById('toggleSong').textContent='Ⅱ';document.getElementById('vinylDisc').classList.add('spinning')}).catch(()=>{})}else{songAudio.pause();document.getElementById('toggleSong').textContent='▶';document.getElementById('vinylDisc').classList.remove('spinning')}});
-document.getElementById('prevSong').addEventListener('click',()=>chooseSong(activeSong<=0?princessSongs.length-1:activeSong-1));document.getElementById('nextSong').addEventListener('click',()=>chooseSong(activeSong+1));songAudio.addEventListener('ended',()=>chooseSong(activeSong+1));
+function chooseSong(index,autoplay=true){
+ activeSong=(index+princessSongs.length)%princessSongs.length;
+ const song=princessSongs[activeSong];
+ document.getElementById('songTitle').textContent=song.title;
+ document.getElementById('songArtist').textContent='Add your chosen MP3 to make this play ♡';
+ document.querySelectorAll('.song-card').forEach((card,i)=>card.classList.toggle('active',i===activeSong));
+ songAudio.pause();songAudio.removeAttribute('src');songAudio.load();
+ document.getElementById('toggleSong').textContent='▶';
+ document.getElementById('vinylDisc').classList.remove('spinning');
+}
+document.querySelectorAll('.song-card').forEach(card=>card.addEventListener('click',()=>chooseSong(Number(card.dataset.song),false)));
+document.getElementById('toggleSong').addEventListener('click',()=>{if(activeSong<0)chooseSong(0,false);else{document.getElementById('songArtist').textContent='This song space is waiting for your MP3 ♡';chime()}});
+document.getElementById('prevSong').addEventListener('click',()=>chooseSong(activeSong<=0?princessSongs.length-1:activeSong-1,false));
+document.getElementById('nextSong').addEventListener('click',()=>chooseSong(activeSong+1,false));
 </script>
 <div id="photoLightbox" role="dialog" aria-modal="true" aria-label="Riddhi photo viewer"><button id="closePhoto" aria-label="Close photo">×</button><div><img id="lightboxImage" alt="Riddhi"><p id="lightboxCaption">A lovely moment ♡</p></div></div>
 <button id="backToTop" aria-label="Back to top">↑</button>
