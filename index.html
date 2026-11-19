@@ -221,6 +221,21 @@ document.addEventListener('click',e=>{if(e.target.closest('button')){tone(523,.1
 
 @media(max-width:600px){#introCurtain .intro-moon{right:8%;top:8%}#introCurtain .intro-castle{bottom:19%;height:205px}#introCurtain .intro-content{transform:translateY(-9vh)}@keyframes introTextIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(-9vh)}}}
 @media(prefers-reduced-motion:reduce){#introCurtain *,#introCurtain *:before,#introCurtain *:after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+/* Original cinematic storybook landscape: layered depth and a gentle camera push */
+#introCurtain{background:radial-gradient(ellipse at 50% 42%,#55436f 0%,#20203d 48%,#080b1c 100%)}
+#introCurtain .intro-stars{background-size:190px 160px,270px 220px,330px 250px,210px 180px,290px 230px;opacity:.9}
+#introCurtain .intro-moon{top:10%;right:17%;width:clamp(85px,12vw,145px)}
+#introCurtain .intro-landscape{position:absolute;inset:0;width:100%;height:100%;z-index:2;overflow:visible}
+#introCurtain .scene-camera{transform-origin:50% 54%;animation:cinemaPush 10s ease-in-out forwards}
+@keyframes cinemaPush{0%{transform:scale(1) translateY(2%)}45%{transform:scale(1.08) translateY(0)}100%{transform:scale(1.2) translateY(-2%)}}
+#introCurtain .intro-horizon{z-index:1;opacity:.45}
+#introCurtain .intro-content{transform:translateY(-20vh);animation:introTextIn 2s 1.5s both}
+#introCurtain .intro-title{font-size:clamp(42px,7.4vw,78px);letter-spacing:.02em;text-shadow:0 3px 20px #1b102e,0 0 35px #f6b6d9aa}
+#introCurtain .intro-sub{color:#fff0f5;text-shadow:0 2px 12px #140b25}
+#introCurtain .intro-kicker{letter-spacing:5px}
+#introCurtain .intro-landscape .castle-architecture{filter:drop-shadow(0 0 18px #f3c5e777)}
+#introCurtain .intro-enter{box-shadow:0 0 30px #f7c5e477,0 8px 24px #08061688}
+@media(max-width:600px){#introCurtain .intro-content{transform:translateY(-17vh)}@keyframes introTextIn{from{opacity:0;transform:translateY(-13vh)}to{opacity:1;transform:translateY(-17vh)}}}
 </style>
 <div id="introCurtain" aria-label="A fairytale welcome for Princess Riddhi">
  <div class="intro-stars"></div><div class="intro-moon"></div>
@@ -230,8 +245,11 @@ document.addEventListener('click',e=>{if(e.target.closest('button')){tone(523,.1
    <animateMotion dur="5.8s" begin="0s" repeatCount="indefinite" rotate="auto"><mpath href="#starArcPath"/></animateMotion>
   </g>
  </svg><div class="intro-horizon"></div>
- <div class="intro-castle" aria-hidden="true"><div class="castle-wing left"></div><div class="castle-wing right"></div><div class="castle-core"></div><div class="castle-tower t1"></div><div class="castle-tower t2"></div><div class="castle-tower t3"></div><div class="castle-window w1"></div><div class="castle-window w2"></div><div class="castle-window w3"></div><div class="castle-door"></div></div>
- <div class="intro-content"><div class="intro-kicker">A story written in starlight</div><h2 class="intro-title">Once upon a time…<br>there was Riddhi</h2><p class="intro-sub">And tonight, the stars are celebrating her.</p><button class="intro-enter" id="enterWorld">Begin the fairytale ✨</button><button class="intro-skip" id="skipIntro">SKIP INTRO</button></div>
+ <svg class="intro-landscape" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+ <defs><linearGradient id="stone" x1="0" x2="1"><stop stop-color="#30264f"/><stop offset=".48" stop-color="#b99ac5"/><stop offset=".72" stop-color="#75618e"/><stop offset="1" stop-color="#29203f"/></linearGradient><linearGradient id="roof" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f4d9c2"/><stop offset=".45" stop-color="#8c5a83"/><stop offset="1" stop-color="#38264f"/></linearGradient><linearGradient id="water" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#8d6b9f" stop-opacity=".55"/><stop offset="1" stop-color="#11152d" stop-opacity=".9"/></linearGradient><filter id="glow"><feGaussianBlur stdDeviation="10"/></filter></defs>
+ <g class="scene-camera"><path d="M0 520 Q230 350 430 480T850 430T1440 460V900H0Z" fill="#211c3c"/><path d="M0 570L180 390 320 515 520 315 710 520 900 350 1110 530 1270 390 1440 540V900H0Z" fill="#302747"/><path d="M0 620Q260 520 470 600T900 575T1440 610V900H0Z" fill="#1a1a35"/><path d="M0 715Q300 620 620 700T1100 670T1440 700V900H0Z" fill="url(#water)"/>
+ <g class="castle-architecture"><ellipse cx="720" cy="670" rx="330" ry="45" fill="#e6b8d8" opacity=".18" filter="url(#glow)"/><path d="M430 650V470L500 420 570 470V650ZM550 650V390L620 330 690 390V650ZM675 650V345L760 260 845 345V650ZM820 650V400L890 340 960 400V650ZM940 650V470L1010 420 1080 470V650Z" fill="url(#stone)" stroke="#f4d5d8" stroke-opacity=".6" stroke-width="3"/><path d="M410 475L500 365 590 475ZM530 395L620 275 710 395ZM645 350L760 170 875 350ZM800 405L890 285 980 405ZM920 475L1010 365 1100 475Z" fill="url(#roof)" stroke="#f7dfd4" stroke-width="3"/><path d="M480 650V535Q500 500 520 535V650M600 650V500Q620 465 640 500V650M735 650V485Q760 440 785 485V650M865 650V505Q890 465 915 505V650M980 650V535Q1010 500 1030 535V650" fill="#f8d99a" opacity=".88"/><path d="M700 650V555Q760 470 820 555V650Z" fill="#241a38" stroke="#e8c4d7" stroke-width="5"/><g fill="#fff0b9"><path d="M490 505h18v34h-18zM610 435h20v38h-20zM750 390h22v46h-22zM880 445h20v38h-20zM1000 505h18v34h-18z"/></g><g fill="#f7d99a"><path d="M500 362v-44h-8l17-28 17 28h-8v44zM620 273v-54h-9l18-32 18 32h-9v54zM760 168V98h-11l22-39 22 39h-11v70zM890 283v-52h-9l18-32 18 32h-9v52zM1010 362v-44h-8l17-28 17 28h-8v44z"/></g></g><path d="M0 740Q220 700 430 750T850 745T1440 735" fill="none" stroke="#e8c4e9" stroke-opacity=".3" stroke-width="3"/></g></svg>
+ <div class="intro-content"><div class="intro-kicker">A story written in starlight</div><h2 class="intro-title">My Princess<br>Riddhi</h2><p class="intro-sub">A whole universe, made just for you.</p><button class="intro-enter" id="enterWorld">Begin the fairytale ✨</button><button class="intro-skip" id="skipIntro">SKIP INTRO</button></div>
 </div>
 <script>
 (()=> {
