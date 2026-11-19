@@ -1,3 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Riddhi Pictures — Princess Day</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Great+Vibes&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #02040d;
+      font-family: 'Cinzel', serif;
+      user-select: none;
+    }
+
+    /* 1. TAP-TO-START CURTAIN (Unlocks Browser Audio) */
+    #start-curtain {
+      position: fixed;
+      inset: 0;
+      z-index: 20000;
+      background: radial-gradient(circle at center, #0c1e4a 0%, #020512 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 1.5rem;
+      transition: opacity 0.9s ease, visibility 0.9s ease;
+    }
+
+    #start-curtain.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .curtain-subtitle {
+      color: #93c5fd;
+      font-size: 0.85rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+      opacity: 0.85;
+    }
+
+    .magic-start-btn {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(147, 197, 253, 0.15));
+      border: 1px solid rgba(191, 219, 254, 0.6);
+      color: #ffffff;
+      padding: 16px 38px;
+      border-radius: 999px;
+      font-family: 'Cinzel', serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      cursor: pointer;
+      box-shadow: 0 0 30px rgba(59, 130, 246, 0.45), inset 0 0 15px rgba(255, 255, 255, 0.15);
+      transition: all 0.35s ease;
+    }
+
+    .magic-start-btn:hover {
+      transform: scale(1.05);
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.45), rgba(254, 240, 138, 0.25));
+      border-color: #fef08a;
+      box-shadow: 0 0 45px rgba(147, 197, 253, 0.8), 0 0 20px rgba(254, 240, 138, 0.4);
+    }
+
+    /* 2. FULLSCREEN DISNEY INTRO STAGE */
+    #intro-stage {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(ellipse at 50% 78%, #183a7a 0%, #09183d 42%, #020511 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      z-index: 9999;
+      transition: opacity 1.6s ease-in-out, visibility 1.6s ease-in-out;
+    }
+
+    #intro-stage.fade-out {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    #magic-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    /* Atmospheric Mist & Moonlit Clouds */
+    .mist-layer {
+      position: absolute;
+      bottom: 18%;
+      width: 150%;
+      height: 220px;
+      background: radial-gradient(ellipse at center, rgba(96, 165, 250, 0.32) 0%, rgba(29, 78, 216, 0.1) 55%, transparent 75%);
+      filter: blur(26px);
+      z-index: 2;
+      animation: mistDrift 10s ease-in-out infinite alternate;
+    }
+
+    /* Scene Container with Slow Cinematic Push-In */
+    .scene-container {
+      position: relative;
+      z-index: 4;
+      width: min(820px, 94vw);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transform: scale(0.88);
+    }
+
+    .scene-container.playing {
+      animation: cameraZoom 10.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    /* Detailed Cinderella Castle SVG */
+    .castle-svg {
+      width: 100%;
+      max-width: 560px;
+      height: auto;
+      opacity: 0;
+      filter: drop-shadow(0 0 28px rgba(125, 195, 255, 0.55));
+    }
+
+    .playing .castle-svg {
+      animation: castleReveal 3.2s ease-out 0.3s forwards;
+    }
+
+    /* Shimmering Water Moat Reflection */
+    .castle-reflection {
+      width: 100%;
+      max-width: 560px;
+      height: 75px;
+      margin-top: -6px;
+      overflow: hidden;
+      opacity: 0;
+      transform: scaleY(-1);
+      mask-image: linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 90%);
+      -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 90%);
+      filter: blur(2.5px);
+    }
+
+    .playing .castle-reflection {
+      animation: reflectionReveal 3.2s ease-out 0.8s forwards;
+    }
+
+    /* Custom Brand Typography ("MY RIDDHI") */
+    .title-wrapper {
+      position: relative;
+      margin-top: -62px;
+      text-align: center;
+      z-index: 6;
+    }
+
+    /* Signature Horizontal Disney Light Flare */
+    .light-flare {
+      position: absolute;
+      top: 52%;
+      left: 50%;
+      width: 0%;
+      height: 2px;
+      transform: translate(-50%, -50%);
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.95), #fef08a, rgba(255,255,255,0.95), transparent);
+      box-shadow: 0 0 18px 3px rgba(147, 197, 253, 0.9);
+      opacity: 0;
+    }
+
+    .playing .light-flare {
+      animation: flareSweep 2.4s ease-out 3.1s forwards;
+    }
+
+    .main-title {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(4.2rem, 11.5vw, 8.2rem);
+      font-weight: 400;
+      color: #ffffff;
+      letter-spacing: 2px;
+      line-height: 1.05;
+      text-shadow:
+        0 2px 10px rgba(2, 6, 23, 0.9),
+        0 0 16px rgba(255, 255, 255, 0.95),
+        0 0 34px rgba(125, 211, 252, 0.9),
+        0 0 65px rgba(37, 99, 235, 0.85);
+      opacity: 0;
+    }
+
+    .playing .main-title {
+      animation: titleAppear 2.5s cubic-bezier(0.16, 1, 0.3, 1) 2.8s forwards;
+    }
+
+    .sub-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(0.85rem, 2.2vw, 1.25rem);
+      font-weight: 800;
+      letter-spacing: 0.6em;
+      text-transform: uppercase;
+      color: #e0f2fe;
+      margin-top: 4px;
+      padding-left: 0.6em;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.9), 0 0 16px rgba(147, 197, 253, 0.85);
+      opacity: 0;
+    }
+
+    .playing .sub-title {
+      animation: subtitleAppear 2s ease-out 4.4s forwards;
+    }
+
+    /* Controls */
+    .intro-controls {
+      position: fixed;
+      bottom: 22px;
+      right: 26px;
+      z-index: 10000;
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-glass {
+      background: rgba(15, 23, 42, 0.55);
+      border: 1px solid rgba(191, 219, 254, 0.3);
+      color: #e2e8f0;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      transition: all 0.25s ease;
+    }
+
+    .btn-glass:hover {
+      background: rgba(59, 130, 246, 0.35);
+      border-color: #ffffff;
+      color: #ffffff;
+    }
+
+    /* Main Ourflix Landing Placeholder */
+    #ourflix-app {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top, #141b2d 0%, #090b10 100%);
+      color: white;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    /* Animations */
+    @keyframes cameraZoom {
+      0% { transform: scale(0.86); }
+      100% { transform: scale(1.04); }
+    }
+
+    @keyframes castleReveal {
+      0% {
+        opacity: 0;
+        filter: drop-shadow(0 0 0 rgba(100,170,255,0)) brightness(0.3);
+      }
+      100% {
+        opacity: 1;
+        filter: drop-shadow(0 0 28px rgba(125, 195, 255, 0.6)) brightness(1.08);
+      }
+    }
+
+    @keyframes reflectionReveal {
+      0% { opacity: 0; }
+      100% { opacity: 0.5; }
+    }
+
+    @keyframes titleAppear {
+      0% {
+        opacity: 0;
+        transform: translateY(16px) scale(0.94);
+        filter: blur(8px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+      }
+    }
+
+    @keyframes subtitleAppear {
+      0% {
+        opacity: 0;
+        letter-spacing: 0.85em;
+      }
+      100% {
+        opacity: 0.95;
+        letter-spacing: 0.6em;
+      }
+    }
+
+    @keyframes flareSweep {
+      0% { width: 0%; opacity: 0; }
+      40% { width: 115%; opacity: 1; }
+      100% { width: 90%; opacity: 0; }
+    }
+
+    @keyframes mistDrift {
+      0% { transform: translateX(-3%) scaleY(0.95); }
+      100% { transform: translateX(3%) scaleY(1.05); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- OPTIONAL: Put a real intro.mp3 in your repo & uncomment below if you want an MP3 instead of the built-in synth orchestra -->
+  <!-- <audio id="customAudio" src="intro.mp3" preload="auto"></audio> -->
+
+  <!-- INITIAL CLICK CURTAIN (Required by browsers so sound plays smoothly) -->
+  <div id="start-curtain">
+    <p class="curtain-subtitle">A Special Princess Day Presentation</p>
+    <button class="magic-start-btn" onclick="beginMagic()">✨ Enter the Magic</button>
+  </div>
+
+  <!-- DISNEY-STYLE INTRO OVERLAY -->
+  <div id="intro-stage">
+    <canvas id="magic-canvas"></canvas>
+    <div class="mist-layer"></div>
+
+    <div class="scene-container" id="sceneContainer">
+      <!-- HIGH-DETAIL CINDERELLA CASTLE SVG -->
+      <svg class="castle-svg" id="castleSvg" viewBox="0 0 640 440" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="towerMain" x1="320" y1="15" x2="320" y2="405" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#f0f9ff" />
+            <stop offset="28%" stop-color="#93c5fd" />
+            <stop offset="68%" stop-color="#2563eb" />
+            <stop offset="100%" stop-color="#0f172a" />
+          </linearGradient>
+          <linearGradient id="towerShadow" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#dbeafe" />
+            <stop offset="55%" stop-color="#3b82f6" />
+            <stop offset="100%" stop-color="#172554" />
+          </linearGradient>
+          <linearGradient id="roofCone" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#ffffff" />
+            <stop offset="45%" stop-color="#60a5fa" />
+            <stop offset="100%" stop-color="#1e3a8a" />
+          </linearGradient>
+          <radialGradient id="windowGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#fef9c3" />
+            <stop offset="70%" stop-color="#facc15" />
+            <stop offset="100%" stop-color="#ca8a04" />
+          </radialGradient>
+        </defs>
+
+        <!-- Stone Bridge & Outer Ramparts -->
+        <path d="M90 402 H550 L575 416 H65 L90 402 Z" fill="url(#towerMain)" />
+        <rect x="125" y="340" width="390" height="62" fill="url(#towerShadow)" />
+        <!-- Battlements along main wall -->
+        <path d="M125 340 v-8 h10 v8 h10 v-8 h10 v8 h10 v-8 h10 v8 h10 v-8 h10 v8 h10 v-8 h10 v8 h10 v-8 h10 v8 h10 v-8 h10 v8 h10 v-8 h10 v8 h10 v-8 h10 v8 h10 v-8 h10 v8 h10 v-8 h10 v8 h10 v-8 h10 v8 h10 v-8 h10 v8 h10 v-8 h10 v8 h10 v-8 h10 v8 h10 v-8 h10 v8 h10 v-8 h10 v8 h10 v-8 h10 v8 h10 v-8 h10 v8 h10 v-8 h10 v8" fill="#93c5fd" />
+
+        <!-- Grand Entrance Gate & Warm Archway -->
+        <path d="M292 402 V356 C292 336 348 336 348 356 V402 Z" fill="#040817" />
+        <path d="M299 402 V360 C299 345 341 345 341 360 V402 Z" fill="url(#windowGlow)" opacity="0.8" />
+        <!-- Portcullis Grid -->
+        <line x1="312" y1="350" x2="312" y2="402" stroke="#1e293b" stroke-width="1.5" />
+        <line x1="320" y1="348" x2="320" y2="402" stroke="#1e293b" stroke-width="1.5" />
+        <line x1="328" y1="350" x2="328" y2="402" stroke="#1e293b" stroke-width="1.5" />
+
+        <!-- Far Left Watchtower -->
+        <rect x="118" y="268" width="26" height="134" fill="url(#towerShadow)" />
+        <polygon points="113,268 131,206 149,268" fill="url(#roofCone)" />
+        <line x1="131" y1="206" x2="131" y2="188" stroke="#ffffff" stroke-width="1.8" />
+        <polygon points="131,188 142,192 131,196" fill="#fef08a" />
+
+        <!-- Left Balcony Turret -->
+        <rect x="162" y="220" width="32" height="182" fill="url(#towerMain)" />
+        <rect x="158" y="214" width="40" height="7" fill="#dbeafe" />
+        <polygon points="158,214 178,136 198,214" fill="url(#roofCone)" />
+        <line x1="178" y1="136" x2="178" y2="115" stroke="#ffffff" stroke-width="2" />
+
+        <!-- Inner-Left Tall Spire -->
+        <rect x="212" y="168" width="34" height="234" fill="url(#towerShadow)" />
+        <rect x="208" y="162" width="42" height="7" fill="#e0f2fe" />
+        <polygon points="208,162 229,76 250,162" fill="url(#roofCone)" />
+        <line x1="229" y1="76" x2="229" y2="54" stroke="#ffffff" stroke-width="2" />
+        <polygon points="229,54 242,58 229,63" fill="#fef08a" />
+
+        <!-- Upper Left-Center Dormer Tower -->
+        <rect x="256" y="142" width="26" height="200" fill="url(#towerMain)" />
+        <polygon points="252,142 269,78 286,142" fill="url(#roofCone)" />
+
+        <!-- CENTRAL GRAND CINDERELLA SPIRE -->
+        <rect x="294" y="124" width="52" height="278" fill="url(#towerMain)" />
+        <!-- Central Stone Trim Bands -->
+        <rect x="290" y="120" width="60" height="8" fill="#f0f9ff" />
+        <rect x="291" y="195" width="58" height="5" fill="#93c5fd" />
+        <rect x="291" y="265" width="58" height="5" fill="#93c5fd" />
+        <!-- Main Spire Roof & Golden Finial -->
+        <polygon points="288,120 320,14 352,120" fill="url(#roofCone)" />
+        <line x1="320" y1="14" x2="320" y2="0" stroke="#ffffff" stroke-width="2.5" />
+        <polygon points="320,2 336,7 320,12" fill="#fef08a" />
+
+        <!-- Upper Right-Center Dormer Tower -->
+        <rect x="358" y="148" width="26" height="194" fill="url(#towerShadow)" />
+        <polygon points="354,148 371,84 388,148" fill="url(#roofCone)" />
+
+        <!-- Inner-Right Tall Spire -->
+        <rect x="394" y="172" width="34" height="230" fill="url(#towerMain)" />
+        <rect x="390" y="166" width="42" height="7" fill="#e0f2fe" />
+        <polygon points="390,166 411,80 432,166" fill="url(#roofCone)" />
+        <line x1="411" y1="80" x2="411" y2="58" stroke="#ffffff" stroke-width="2" />
+        <polygon points="411,58 424,62 411,67" fill="#fef08a" />
+
+        <!-- Right Balcony Turret -->
+        <rect x="446" y="224" width="32" height="178" fill="url(#towerShadow)" />
+        <rect x="442" y="218" width="40" height="7" fill="#dbeafe" />
+        <polygon points="442,218 462,140 482,218" fill="url(#roofCone)" />
+        <line x1="462" y1="140" x2="462" y2="118" stroke="#ffffff" stroke-width="2" />
+
+        <!-- Far Right Watchtower -->
+        <rect x="496" y="268" width="26" height="134" fill="url(#towerMain)" />
+        <polygon points="491,268 509,206 527,268" fill="url(#roofCone)" />
+        <line x1="509" y1="206" x2="509" y2="188" stroke="#ffffff" stroke-width="1.8" />
+        <polygon points="509,188 520,192 509,196" fill="#fef08a" />
+
+        <!-- Warm Illuminated Castle Windows -->
+        <rect x="313" y="146" width="14" height="28" rx="7" fill="url(#windowGlow)" />
+        <rect x="304" y="216" width="10" height="22" rx="5" fill="url(#windowGlow)" />
+        <rect x="326" y="216" width="10" height="22" rx="5" fill="url(#windowGlow)" />
+        <rect x="314" y="284" width="12" height="24" rx="6" fill="url(#windowGlow)" />
+
+        <rect x="224" y="192" width="10" height="20" rx="5" fill="url(#windowGlow)" />
+        <rect x="224" y="242" width="10" height="20" rx="5" fill="url(#windowGlow)" />
+        <rect x="406" y="196" width="10" height="20" rx="5" fill="url(#windowGlow)" />
+        <rect x="406" y="246" width="10" height="20" rx="5" fill="url(#windowGlow)" />
+
+        <circle cx="178" cy="248" r="5" fill="url(#windowGlow)" />
+        <circle cx="462" cy="252" r="5" fill="url(#windowGlow)" />
+        <circle cx="131" cy="296" r="4" fill="url(#windowGlow)" />
+        <circle cx="509" cy="296" r="4" fill="url(#windowGlow)" />
+      </svg>
+
+      <!-- Water Reflection Mirror -->
+      <div class="castle-reflection" id="reflectionBox"></div>
+
+      <!-- CUSTOM TITLE: MY RIDDHI PICTURES -->
+      <div class="title-wrapper">
+        <div class="light-flare"></div>
+        <h1 class="main-title">My Riddhi</h1>
+        <p class="sub-title">PICTURES</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Replay / Mute / Skip Controls -->
+  <div class="intro-controls">
+    <button class="btn-glass" id="muteBtn" onclick="toggleMute()">🔊 Sound On</button>
+    <button class="btn-glass" onclick="replayIntro()">↻ Replay</button>
+    <button class="btn-glass" id="skipBtn" onclick="finishIntro()">Enter Site →</button>
+  </div>
+
+  <!-- MAIN OURFLIX SITE CONTENT -->
+  <main id="ourflix-app">
+    <h2 style="font-size: 2.2rem; margin-bottom: 0.75rem; color: #93c5fd;">Welcome to My Riddhi Pictures</h2>
+    <p style="color: #94a3b8; max-width: 500px; line-height: 1.6;">
+      Your Ourflix-style Princess Day catalog, featured memories hero banner, and interactive rows go right here!
+    </p>
+  </main>
+
+  <script>
+    const canvas = document.getElementById('magic-canvas');
+    const ctx = canvas.getContext('2d');
+    const introStage = document.getElementById('intro-stage');
+    const startCurtain = document.getElementById('start-curtain');
+    const sceneContainer = document.getElementById('sceneContainer');
+    const skipBtn = document.getElementById('skipBtn');
+    const muteBtn = document.getElementById('muteBtn');
+
+    // Clone castle SVG into the water reflection container
+    document.getElementById('reflectionBox').innerHTML = document.getElementById('castleSvg').outerHTML;
+
+    let width, height;
+    let stars = [];
+    let arcParticles = [];
+    let fireworks = [];
+    let startTime = null;
+    let isPlaying = false;
+    let introFinished = false;
+    let autoExitTimer = null;
+    let isMuted = false;
+    let audioCtx = null;
+
+    /* ==========================================================
+       WEB AUDIO ORCHESTRAL SYNTH ("When You Wish Upon a Star" feel)
+       Plays automatically on click with zero external MP3 needed!
+       ========================================================== */
+    function playDisneyIntroSound() {
+      if (isMuted) return;
+
+      // If you added <audio id="customAudio" src="intro.mp3">, play it instead:
+      const customAudio = document.getElementById('customAudio');
+      if (customAudio) {
+        customAudio.currentTime = 0;
+        customAudio.play();
+        return;
+      }
+
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+
+      const now = audioCtx.currentTime;
+
+      // Helper for lush orchestral string/brass pad notes
+      function playNote(freq, startOffset, duration, volume = 0.14, type = 'triangle') {
+        const osc = audioCtx.createOscillator();
+        const osc2 = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        const filter = audioCtx.createBiquadFilter();
+
+        osc.type = type;
+        osc2.type = 'sine';
+        osc.frequency.setValueAtTime(freq, now + startOffset);
+        osc2.frequency.setValueAtTime(freq * 1.003, now + startOffset); // warm chorus detune
+
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(1800, now + startOffset);
+
+        gain.gain.setValueAtTime(0.0001, now + startOffset);
+        gain.gain.linearRampToValueAtTime(volume, now + startOffset + 0.25);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + startOffset + duration);
+
+        osc.connect(filter);
+        osc2.connect(filter);
+        filter.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start(now + startOffset);
+        osc2.start(now + startOffset);
+        osc.stop(now + startOffset + duration + 0.05);
+        osc2.stop(now + startOffset + duration + 0.05);
+      }
+
+      // 1. Shimmering Harp Arpeggio Opening (0.0s - 2.5s)
+      const harpNotes = [261.63, 329.63, 392.00, 493.88, 523.25, 659.25, 783.99, 1046.50];
+      harpNotes.forEach((freq, idx) => {
+        playNote(freq, idx * 0.22, 2.2, 0.09, 'sine');
+      });
+
+      // 2. Iconic "Wish Upon a Star" Melody Theme (2.2s - 7.8s)
+      // Notes: G4 -> G5 -> F5 -> E5 -> C#5 -> D5 -> A5 -> G5
+      const melody = [
+        { f: 392.00, t: 2.2, d: 1.1, v: 0.16 }, // G4 ("When")
+        { f: 783.99, t: 3.1, d: 1.3, v: 0.18 }, // G5 ("you") — syncs with Shooting Star!
+        { f: 698.46, t: 4.2, d: 0.7, v: 0.15 }, // F5 ("wish")
+        { f: 659.25, t: 4.8, d: 0.7, v: 0.15 }, // E5 ("up-")
+        { f: 554.37, t: 5.4, d: 0.7, v: 0.15 }, // C#5 ("-on")
+        { f: 587.33, t: 6.0, d: 1.3, v: 0.17 }, // D5 ("a")
+        { f: 880.00, t: 7.0, d: 2.6, v: 0.20 }  // A5 ("star...") — Grand Finale Swell!
+      ];
+      melody.forEach(n => playNote(n.f, n.t, n.d, n.v, 'triangle'));
+
+      // 3. Warm Grand Finale Chord (7.0s - 10.2s)
+      [261.63, 329.63, 392.00, 523.25, 659.25].forEach(freq => {
+        playNote(freq, 7.0, 3.3, 0.08, 'sine');
+      });
+
+      // 4. Fairy-Dust Sparkle Chimes during Shooting Star (3.3s - 5.2s)
+      for (let i = 0; i < 14; i++) {
+        const chimeFreq = 1400 + Math.random() * 1800;
+        playNote(chimeFreq, 3.3 + i * 0.13, 0.45, 0.04, 'sine');
+      }
+    }
+
+    function toggleMute() {
+      isMuted = !isMuted;
+      muteBtn.textContent = isMuted ? '🔇 Muted' : '🔊 Sound On';
+      const customAudio = document.getElementById('customAudio');
+      if (customAudio) customAudio.muted = isMuted;
+      if (isMuted && audioCtx) {
+        audioCtx.suspend();
+      } else if (!isMuted && audioCtx) {
+        audioCtx.resume();
+      }
+    }
+
+    /* ==========================================================
+       CANVAS STARFIELD, SHOOTING STAR ARC & FIREWORKS
+       ========================================================== */
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      initStars();
+    }
+
+    function initStars() {
+      stars = [];
+      const count = Math.floor((width * height) / 4800);
+      for (let i = 0; i < count; i++) {
+        stars.push({
+          x: Math.random() * width,
+          y: Math.random() * height * 0.82,
+          r: Math.random() * 1.7 + 0.3,
+          alpha: Math.random(),
+          speed: Math.random() * 0.025 + 0.006
+        });
+      }
+    }
+
+    function spawnShootingStar(progress) {
+      const cx = width / 2;
+      const cy = height / 2;
+      const span = Math.min(width * 0.44, 390);
+      const peak = Math.min(height * 0.36, 255);
+
+      const p0 = { x: cx - span, y: cy + 25 };
+      const p1 = { x: cx, y: cy - peak };
+      const p2 = { x: cx + span, y: cy + 20 };
+
+      const t = progress;
+      const x = (1 - t) * (1 - t) * p0.x + 2 * (1 - t) * t * p1.x + t * t * p2.x;
+      const y = (1 - t) * (1 - t) * p0.y + 2 * (1 - t) * t * p1.y + t * t * p2.y;
+
+      // Glowing Comet Head
+      ctx.save();
+      const grad = ctx.createRadialGradient(x, y, 0, x, y, 28);
+      grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
+      grad.addColorStop(0.3, 'rgba(254, 240, 138, 0.95)');
+      grad.addColorStop(0.7, 'rgba(96, 165, 250, 0.45)');
+      grad.addColorStop(1, 'rgba(56, 189, 248, 0)');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(x, y, 28, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      // Golden & Diamond Dust Trail
+      for (let i = 0; i < 8; i++) {
+        arcParticles.push({
+          x: x + (Math.random() - 0.5) * 12,
+          y: y + (Math.random() - 0.5) * 12,
+          vx: (Math.random() - 0.5) * 1.1,
+          vy: Math.random() * 0.9 + 0.2,
+          life: 1,
+          decay: Math.random() * 0.012 + 0.007,
+          size: Math.random() * 2.6 + 0.7,
+          gold: Math.random() > 0.3
+        });
+      }
+    }
+
+    function launchFirework(x, y, hue) {
+      const count = 56;
+      for (let i = 0; i < count; i++) {
+        const angle = (Math.PI * 2 * i) / count;
+        const speed = Math.random() * 3.8 + 1.1;
+        fireworks.push({
+          x,
+          y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          life: 1,
+          decay: Math.random() * 0.016 + 0.01,
+          hue
+        });
+      }
+    }
+
+    function animate(timestamp) {
+      if (isPlaying && !startTime) startTime = timestamp;
+      const elapsed = isPlaying ? (timestamp - startTime) / 1000 : 0;
+
+      ctx.clearRect(0, 0, width, height);
+
+      // Twinkling Stars
+      stars.forEach(s => {
+        s.alpha += s.speed;
+        const opacity = 0.25 + Math.abs(Math.sin(s.alpha)) * 0.75;
+        ctx.fillStyle = `rgba(224, 242, 254, ${opacity})`;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      // Shooting Star Arc (3.1s to 5.5s)
+      if (isPlaying && elapsed >= 3.1 && elapsed <= 5.5) {
+        const arcProgress = (elapsed - 3.1) / 2.4;
+        spawnShootingStar(arcProgress);
+      }
+
+      // Render Sparkle Trail
+      for (let i = arcParticles.length - 1; i >= 0; i--) {
+        const p = arcParticles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.life -= p.decay;
+        if (p.life <= 0) {
+          arcParticles.splice(i, 1);
+          continue;
+        }
+        ctx.fillStyle = p.gold
+          ? `rgba(254, 240, 138, ${p.life})`
+          : `rgba(186, 230, 253, ${p.life})`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Render Fireworks
+      for (let i = fireworks.length - 1; i >= 0; i--) {
+        const f = fireworks[i];
+        f.x += f.vx;
+        f.y += f.vy;
+        f.vy += 0.032;
+        f.vx *= 0.982;
+        f.vy *= 0.982;
+        f.life -= f.decay;
+        if (f.life <= 0) {
+          fireworks.splice(i, 1);
+          continue;
+        }
+        ctx.fillStyle = `hsla(${f.hue}, 95%, 74%, ${f.life})`;
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, 2.1, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    function scheduleFireworks() {
+      const cx = width / 2;
+      const cy = height / 2;
+      setTimeout(() => launchFirework(cx - 210, cy - 120, 45), 5200);
+      setTimeout(() => launchFirework(cx + 215, cy - 140, 200), 5800);
+      setTimeout(() => launchFirework(cx - 90, cy - 195, 48), 6400);
+      setTimeout(() => launchFirework(cx + 110, cy - 185, 280), 6900);
+    }
+
+    function beginMagic() {
+      startCurtain.classList.add('hidden');
+      startSequence();
+    }
+
+    function startSequence() {
+      clearTimeout(autoExitTimer);
+      isPlaying = true;
+      introFinished = false;
+      arcParticles = [];
+      fireworks = [];
+      startTime = null;
+
+      introStage.classList.remove('fade-out');
+      skipBtn.style.display = 'inline-block';
+
+      // Trigger CSS animations cleanly
+      const currentScene = document.getElementById('sceneContainer');
+      const freshScene = currentScene.cloneNode(true);
+      freshScene.classList.add('playing');
+      currentScene.parentNode.replaceChild(freshScene, currentScene);
+
+      playDisneyIntroSound();
+      scheduleFireworks();
+
+      // Fade out into Ourflix main page after 10.5 seconds
+      autoExitTimer = setTimeout(finishIntro, 10500);
+    }
+
+    function finishIntro() {
+      if (introFinished) return;
+      introFinished = true;
+      introStage.classList.add('fade-out');
+      skipBtn.style.display = 'none';
+    }
+
+    function replayIntro() {
+      startSequence();
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+    requestAnimationFrame(animate);
+  </script>
+</body>
+</html>
 <!doctype html>
 <html lang="en">
 <head>
