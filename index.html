@@ -1,1 +1,2270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#080614">
+  <title>Riddhi — Enchanted Princess Day</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cinzel:wght@600;800&family=Great+Vibes&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070512;
+      --rose: #ff4d8d;
+      --blush: #ffa8cb;
+      --gold: #ffd166;
+      --aqua: #7dd3fc;
+      --violet: #c084fc;
+      --spotify: #1db954;
+      --crystal-border: rgba(186, 230, 253, 0.36);
+      --cream: #fff6fa;
+      --muted: #d8c6e6;
+    }
 
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100dvh;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 14% 12%, rgba(255, 77, 141, 0.2), transparent 44%),
+        radial-gradient(circle at 86% 14%, rgba(56, 189, 248, 0.18), transparent 46%),
+        linear-gradient(180deg, rgba(6, 4, 16, 0.72) 0%, rgba(17, 8, 34, 0.66) 50%, rgba(6, 4, 15, 0.78) 100%);
+      color: var(--cream);
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      line-height: 1.5;
+    }
+    img { display: block; max-width: 100%; }
+    button { font-family: inherit; cursor: pointer; color: inherit; }
+    h1, h2, h3, h4, p { margin: 0; }
+    .hidden { display: none !important; }
+    .muted { color: var(--muted); }
+
+    /* Always-present blurred castle video background layer */
+    .video-bg-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+      background: #040714;
+    }
+    #intro-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 1;
+      filter: none;
+      transition: opacity 0.65s ease, filter 0.65s ease, transform 0.8s ease;
+    }
+    .video-bg-layer.castle-backdrop #intro-video {
+      opacity: 0.42;
+      filter: blur(8px) saturate(125%) brightness(0.85);
+      transform: scale(1.04);
+    }
+    .video-bg-tint {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, rgba(12, 24, 54, 0.25), rgba(6, 4, 16, 0.72));
+      opacity: 0;
+      transition: opacity 0.65s ease;
+    }
+    .video-bg-layer.castle-backdrop .video-bg-tint {
+      opacity: 1;
+    }
+
+    /* Magical Sky: Twinkling Stars + Shooting Stars + Floating Teddys */
+    .sky-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+    .star {
+      position: absolute;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.85);
+      animation: twinkle var(--tw, 3.5s) ease-in-out infinite;
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.25; transform: scale(0.85); }
+      50% { opacity: 1; transform: scale(1.25); }
+    }
+    .shooting-star {
+      position: absolute;
+      width: 150px;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(125, 211, 252, 0.9), rgba(255, 241, 184, 1));
+      box-shadow: 0 0 14px rgba(125, 211, 252, 0.9);
+      opacity: 0;
+      transform: rotate(-28deg);
+      animation: shoot var(--sdur, 6.5s) linear infinite;
+      animation-delay: var(--sdelay, 0s);
+    }
+    @keyframes shoot {
+      0% { opacity: 0; transform: translate3d(0, 0, 0) rotate(-28deg); }
+      6% { opacity: 1; }
+      24% { opacity: 0; transform: translate3d(-460px, 240px, 0) rotate(-28deg); }
+      100% { opacity: 0; transform: translate3d(-460px, 240px, 0) rotate(-28deg); }
+    }
+    .ambient-item {
+      position: absolute;
+      font-size: clamp(20px, 3vw, 30px);
+      opacity: 0.16;
+      animation: drift var(--dur, 12s) ease-in-out infinite;
+      animation-delay: var(--delay, 0s);
+    }
+    @keyframes drift {
+      0%, 100% { transform: translateY(0) rotate(-6deg); }
+      50% { transform: translateY(-16px) rotate(7deg); }
+    }
+
+    /* Full-page silent firecracker burst canvas */
+    #fireworks-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 260;
+    }
+
+    /* ============================================================
+       CORNER PRINCE + THOUGHTS BUBBLE
+       ============================================================ */
+    .prince-corner-wrap {
+      position: fixed;
+      bottom: 68px;
+      right: 14px;
+      z-index: 120;
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      pointer-events: none;
+    }
+    .prince-hud {
+      pointer-events: auto;
+      max-width: 245px;
+      padding: 10px 13px;
+      border-radius: 18px;
+      background: linear-gradient(155deg, rgba(255, 250, 235, 0.96), rgba(224, 242, 254, 0.94));
+      color: #18102b;
+      border: 1px solid rgba(255, 209, 102, 0.9);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.55);
+      font-size: 11.8px;
+      font-weight: 700;
+      line-height: 1.35;
+      margin-bottom: 14px;
+    }
+    .prince-hud-title {
+      font-family: 'Cinzel', serif;
+      font-size: 10.5px;
+      font-weight: 800;
+      color: #0d6e6e;
+      margin-bottom: 3px;
+    }
+    .prince-hud-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: 7px;
+      flex-wrap: wrap;
+    }
+    .prince-chip {
+      border: 0;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 10.5px;
+      font-weight: 800;
+      background: #ff3b82;
+      color: #fff;
+    }
+    .prince-corner-img {
+      width: clamp(108px, 13.5vw, 156px);
+      height: auto;
+      max-height: 32dvh;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.65));
+      transform-origin: bottom center;
+      animation: princeBreathe 3.2s ease-in-out infinite;
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    .prince-corner-img.excited {
+      transform: translateY(-6px) scale(1.05) rotate(-2deg);
+      filter: drop-shadow(0 0 18px rgba(255, 209, 102, 0.75)) drop-shadow(0 10px 20px rgba(0, 0, 0, 0.7));
+    }
+    @keyframes princeBreathe {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-4px) rotate(1.2deg); }
+    }
+
+    /* Water Crystal Glass & Lifted 3D Buttons/Tabs */
+    .crystal-surface {
+      background: linear-gradient(145deg, rgba(186, 230, 253, 0.16), rgba(255, 158, 187, 0.09) 55%, rgba(18, 10, 32, 0.72));
+      -webkit-backdrop-filter: blur(18px) saturate(145%);
+      backdrop-filter: blur(18px) saturate(145%);
+      border: 1px solid var(--crystal-border);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        0 14px 34px rgba(2, 6, 23, 0.55);
+    }
+    .crystal-3d {
+      position: relative;
+      border-radius: 999px;
+      background: linear-gradient(160deg, rgba(224, 242, 254, 0.25), rgba(125, 211, 252, 0.11) 52%, rgba(255, 158, 187, 0.17));
+      border: 1px solid rgba(224, 242, 254, 0.44);
+      box-shadow:
+        inset 0 1px 1px rgba(255, 255, 255, 0.58),
+        0 4px 0 rgba(12, 26, 54, 0.9),
+        0 10px 20px rgba(56, 189, 248, 0.22);
+      transform: translateY(-2px);
+      transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+    .crystal-3d:hover {
+      transform: translateY(-3px);
+      box-shadow:
+        inset 0 1px 2px rgba(255, 255, 255, 0.75),
+        0 6px 0 rgba(12, 26, 54, 0.95),
+        0 14px 28px rgba(125, 211, 252, 0.36);
+    }
+    .crystal-3d:active,
+    .crystal-3d.active-tab {
+      transform: translateY(1px);
+      background: linear-gradient(160deg, rgba(255, 133, 180, 0.42), rgba(125, 211, 252, 0.25));
+      border-color: var(--gold);
+      box-shadow:
+        inset 0 1px 2px rgba(255, 255, 255, 0.7),
+        0 2px 0 rgba(88, 16, 52, 0.95),
+        0 8px 20px rgba(255, 77, 141, 0.35);
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 999px;
+      padding: 11px 20px;
+      font-weight: 700;
+      font-size: 13.5px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform 0.16s ease, box-shadow 0.2s ease;
+    }
+    .btn-rose-3d {
+      background: linear-gradient(160deg, #ff7aa8, #ff3b82 65%, #c9185b);
+      color: #fff;
+      border: 1px solid rgba(255, 214, 230, 0.5);
+      box-shadow:
+        inset 0 1px 1px rgba(255, 255, 255, 0.5),
+        0 5px 0 #7a0935,
+        0 14px 28px rgba(255, 59, 130, 0.45);
+      transform: translateY(-2px);
+    }
+    .btn-rose-3d:hover { transform: translateY(-4px); }
+    .btn-rose-3d:active { transform: translateY(2px); box-shadow: inset 0 1px 1px rgba(255,255,255,0.3), 0 1px 0 #7a0935; }
+
+    .btn-gold-3d {
+      background: linear-gradient(160deg, #fff1b8, #ffd166 60%, #e09f1f);
+      color: #261200;
+      border: 1px solid rgba(255, 250, 220, 0.75);
+      box-shadow:
+        inset 0 1px 1px rgba(255, 255, 255, 0.75),
+        0 5px 0 #855806,
+        0 14px 28px rgba(255, 209, 102, 0.38);
+      transform: translateY(-2px);
+    }
+    .btn-gold-3d:hover { transform: translateY(-4px); }
+    .btn-gold-3d:active { transform: translateY(2px); box-shadow: inset 0 1px 1px rgba(255,255,255,0.5), 0 1px 0 #855806; }
+
+    /* ============================================================
+       SCREEN 1: INTRO CONTROLS OVER THE PERSISTENT VIDEO LAYER
+       ============================================================ */
+    #screen-intro {
+      position: fixed;
+      inset: 0;
+      z-index: 250;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      pointer-events: none;
+      transition: opacity 0.65s ease, visibility 0.65s ease;
+    }
+    #screen-intro.fade-out {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .water-reveal {
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.85s ease;
+    }
+    .water-reveal.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .water-shimmer-bar {
+      width: 0;
+      height: 3px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+      background: linear-gradient(90deg, transparent, #bae6fd, #ffe58f, #bae6fd, transparent);
+      box-shadow: 0 0 22px rgba(125, 211, 252, 0.95);
+      transition: width 1.1s ease-out;
+    }
+    .water-reveal.show .water-shimmer-bar {
+      width: min(440px, 78vw);
+    }
+    .disney-water-name {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(4.8rem, 13vw, 9rem);
+      font-weight: 400;
+      line-height: 1.02;
+      background: linear-gradient(180deg, #ffffff 0%, #e0f2fe 38%, #7dd3fc 68%, #ffe58f 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 18px rgba(125, 211, 252, 0.85))
+              drop-shadow(0 6px 26px rgba(2, 6, 20, 0.95));
+      animation: waterWave 3.2s ease-in-out infinite;
+    }
+    @keyframes waterWave {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-6px) scale(1.02); }
+    }
+    .disney-water-sub {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(0.85rem, 2vw, 1.15rem);
+      font-weight: 800;
+      letter-spacing: 0.55em;
+      padding-left: 0.55em;
+      color: #e0f2fe;
+      margin-top: 8px;
+      text-shadow: 0 2px 14px rgba(0, 0, 0, 0.95);
+    }
+
+    .intro-start-gate {
+      position: absolute;
+      inset: 0;
+      z-index: 6;
+      pointer-events: auto;
+      background: radial-gradient(circle at center, rgba(24, 14, 42, 0.82), rgba(2, 6, 20, 0.92));
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      gap: 16px;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+    .intro-start-gate.hide {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .intro-skip-btn {
+      position: absolute;
+      bottom: 24px;
+      right: 24px;
+      z-index: 7;
+      pointer-events: auto;
+      padding: 9px 18px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .intro-skip-btn.hide-skip {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* ============================================================
+       SCREEN 2: ROMANTIC QUESTION & DODGING "NO" GAME
+       ============================================================ */
+    #screen-game {
+      position: fixed;
+      inset: 0;
+      z-index: 180;
+      background: radial-gradient(circle at 50% 45%, rgba(14, 10, 28, 0.45), rgba(8, 5, 18, 0.72));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow: hidden;
+    }
+    .game-card {
+      position: relative;
+      z-index: 5;
+      width: 100%;
+      max-width: 540px;
+      border-radius: 28px;
+      padding: 28px 24px;
+      text-align: center;
+    }
+    .game-avatar {
+      width: 86px;
+      height: 86px;
+      border-radius: 22px;
+      object-fit: cover;
+      object-position: 50% 22%;
+      margin: 0 auto 12px;
+      border: 2px solid rgba(224, 242, 254, 0.7);
+      box-shadow: 0 12px 28px rgba(255, 77, 141, 0.35);
+    }
+    .game-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .game-dots i {
+      width: 30px;
+      height: 5px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.16);
+      display: block;
+    }
+    .game-dots i.done { background: var(--rose); }
+    .game-dots i.now { background: var(--gold); }
+    .game-q {
+      font-size: clamp(1.25rem, 3.8vw, 1.65rem);
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .game-sub {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .dodge-badge {
+      display: inline-block;
+      min-height: 26px;
+      padding: 4px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--gold);
+      background: rgba(255, 209, 102, 0.16);
+      border: 1px solid rgba(255, 209, 102, 0.4);
+      margin-bottom: 14px;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+    .dodge-badge.show { opacity: 1; }
+    .game-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      min-height: 56px;
+      position: relative;
+    }
+    .no-placeholder {
+      display: inline-block;
+      width: 104px;
+      height: 44px;
+    }
+    .game-actions.moved .no-placeholder { display: none; }
+    .btn-no-dodge {
+      position: fixed;
+      z-index: 220;
+      left: 0;
+      top: 0;
+      padding: 11px 20px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 13.5px;
+      touch-action: none;
+      transition: left 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  top 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  transform 0.2s ease;
+    }
+    .game-toast {
+      margin-top: 12px;
+      min-height: 22px;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--blush);
+    }
+
+    /* ============================================================
+       NO-SCROLL STAGE SHELL (100dvh, CLICK TABS TO SWITCH STAGES)
+       ============================================================ */
+    #main-site {
+      position: relative;
+      z-index: 2;
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .navbar {
+      flex-shrink: 0;
+      padding: 10px 3.5%;
+      background: rgba(8, 6, 18, 0.72);
+      -webkit-backdrop-filter: blur(18px);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--crystal-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .nav-brand {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2rem;
+      color: var(--gold);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      line-height: 1;
+      text-shadow: 0 0 18px rgba(255, 209, 102, 0.35);
+      background: none;
+      border: 0;
+      padding: 0;
+    }
+    .nav-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .nav-tab {
+      padding: 6px 13px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--cream);
+    }
+
+    .stage-viewport {
+      position: relative;
+      flex: 1;
+      min-height: 0;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 3.5% 84px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .stage-panel {
+      width: 100%;
+      max-height: 100%;
+      overflow-y: auto;
+      scrollbar-width: none;
+      animation: stageFade 0.28s ease;
+    }
+    .stage-panel::-webkit-scrollbar { display: none; }
+    @keyframes stageFade {
+      from { opacity: 0; transform: translateY(8px) scale(0.99); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 14px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(125, 211, 252, 0.2), rgba(255, 77, 141, 0.22));
+      border: 1px solid var(--crystal-border);
+      color: var(--blush);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    /* Stage 1: Hero Spotlight */
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.88fr;
+      gap: 28px;
+      align-items: center;
+    }
+    .hero-name {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(3.8rem, 7.5vw, 5.8rem);
+      font-weight: 400;
+      line-height: 0.95;
+      color: #fff;
+      text-shadow: 0 0 28px rgba(255, 77, 141, 0.45);
+    }
+    .hero-subtitle {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.05rem, 2vw, 1.55rem);
+      color: var(--gold);
+      margin-top: 6px;
+      margin-bottom: 12px;
+    }
+    .hero-copy {
+      color: var(--muted);
+      font-size: 14.5px;
+      max-width: 540px;
+      margin-bottom: 18px;
+    }
+    .hero-btns { display: flex; flex-wrap: wrap; gap: 12px; }
+    .hero-card {
+      position: relative;
+      border-radius: 26px;
+      padding: 10px;
+      max-width: 390px;
+      margin: 0 auto;
+    }
+    .hero-card img {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      max-height: 54dvh;
+      object-fit: cover;
+      object-position: 50% 22%;
+      border-radius: 18px;
+    }
+    .hero-princess-tag {
+      position: absolute;
+      top: 18px;
+      left: 18px;
+      padding: 5px 12px;
+      font-size: 11.5px;
+      font-weight: 800;
+      color: #e0f2fe;
+    }
+    .hero-teddy-tag {
+      position: absolute;
+      bottom: 18px;
+      right: 18px;
+      padding: 7px 14px;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--gold);
+    }
+
+    .sec-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+    .sec-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.25rem, 2.3vw, 1.7rem);
+      color: #fff;
+    }
+    .sec-sub { color: var(--muted); font-size: 13px; margin-top: 2px; }
+    .sec-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+    /* ============================================================
+       STAGE 2: BULGED-OUT WATERY CRYSTAL LIVE TIMER
+       ============================================================ */
+    .earth-timer-box {
+      border-radius: 28px;
+      padding: 26px 24px;
+      text-align: center;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(125, 211, 252, 0.24), transparent 62%),
+        linear-gradient(150deg, rgba(186, 230, 253, 0.16), rgba(255, 158, 187, 0.08) 55%, rgba(12, 10, 28, 0.78));
+      border: 1px solid rgba(224, 242, 254, 0.45);
+      box-shadow:
+        inset 0 2px 3px rgba(255, 255, 255, 0.42),
+        0 18px 42px rgba(2, 6, 23, 0.65),
+        0 0 32px rgba(125, 211, 252, 0.18);
+    }
+    .timer-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(76px, 1fr));
+      gap: 14px;
+      margin-top: 20px;
+    }
+    .t-cell {
+      position: relative;
+      border-radius: 22px;
+      padding: 16px 10px;
+      background:
+        radial-gradient(ellipse at 50% 14%, rgba(255, 255, 255, 0.34), rgba(125, 211, 252, 0.16) 45%, rgba(14, 26, 54, 0.76) 100%);
+      border: 1px solid rgba(224, 242, 254, 0.56);
+      box-shadow:
+        inset 0 3px 6px rgba(255, 255, 255, 0.55),
+        inset 0 -8px 14px rgba(2, 12, 36, 0.65),
+        0 8px 0 rgba(8, 22, 48, 0.92),
+        0 16px 28px rgba(56, 189, 248, 0.32),
+        0 0 18px rgba(186, 230, 253, 0.22);
+      transform: translateY(-4px);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .t-cell::before {
+      content: "";
+      position: absolute;
+      top: 5px;
+      left: 16%;
+      right: 16%;
+      height: 7px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.1));
+      pointer-events: none;
+    }
+    .t-cell:hover {
+      transform: translateY(-7px) scale(1.03);
+      box-shadow:
+        inset 0 3px 7px rgba(255, 255, 255, 0.7),
+        inset 0 -8px 14px rgba(2, 12, 36, 0.65),
+        0 11px 0 rgba(8, 22, 48, 0.95),
+        0 22px 34px rgba(125, 211, 252, 0.46),
+        0 0 24px rgba(255, 209, 102, 0.28);
+    }
+    .t-cell b {
+      display: block;
+      font-size: clamp(1.35rem, 2.8vw, 1.9rem);
+      color: var(--gold);
+      font-weight: 800;
+      text-shadow: 0 2px 10px rgba(255, 209, 102, 0.45), 0 2px 4px rgba(0, 0, 0, 0.7);
+    }
+    .t-cell small {
+      display: block;
+      margin-top: 2px;
+      font-size: 10.5px;
+      color: #e0f2fe;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      font-weight: 800;
+    }
+
+    /* Stage 3: Sliding Gallery */
+    .slider-wrap {
+      border-radius: 24px;
+      padding: 16px;
+    }
+    .slider-track {
+      display: flex;
+      gap: 14px;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+      padding: 4px 2px 8px;
+    }
+    .slider-track::-webkit-scrollbar { display: none; }
+    .slide-card {
+      flex: 0 0 205px;
+      padding: 0;
+      border-radius: 18px;
+      overflow: hidden;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+    }
+    .slide-thumb { aspect-ratio: 3 / 4; overflow: hidden; width: 100%; }
+    .slide-thumb img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 22%; }
+    .slide-label {
+      padding: 9px 11px;
+      font-size: 11.5px;
+      font-weight: 800;
+      color: var(--gold);
+      background: rgba(10, 8, 22, 0.86);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+    .slide-label span:last-child { color: var(--aqua); font-size: 11px; }
+
+    /* Stage 4: Personal Polaroids */
+    .pol-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(180px, 1fr));
+      gap: 16px;
+    }
+    .pol { perspective: 1100px; height: 320px; cursor: pointer; }
+    .pol-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+      border-radius: 16px;
+    }
+    .pol.flipped .pol-inner { transform: rotateY(180deg); }
+    .pol-face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      border-radius: 16px;
+      background: #fff7fa;
+      color: #261430;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.52);
+    }
+    .pol-photo { position: relative; flex: 1; border-radius: 10px; overflow: hidden; background: #3b2248; }
+    .pol-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 22%; }
+    .princess-chip {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.86);
+      border: 1px solid rgba(186, 230, 253, 0.55);
+      color: #e0f2fe;
+      font-size: 10.5px;
+      font-weight: 800;
+    }
+    .pol-cap {
+      padding-top: 8px;
+      text-align: center;
+      font-family: 'Caveat', cursive;
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .pol-back {
+      transform: rotateY(180deg);
+      background: linear-gradient(165deg, #fff5f9, #ffe6f0);
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 16px;
+      font-family: 'Caveat', cursive;
+      font-size: 22px;
+      line-height: 1.3;
+    }
+
+    /* Stage 5: Extras */
+    .fun-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(240px, 1fr));
+      gap: 18px;
+    }
+    .fun-box {
+      border-radius: 24px;
+      padding: 22px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .fun-box h3 { font-family: 'Cinzel', serif; font-size: 1.08rem; color: var(--gold); }
+    .fun-quote {
+      min-height: 52px;
+      font-family: 'Caveat', cursive;
+      font-size: 23px;
+      color: var(--cream);
+      line-height: 1.25;
+    }
+
+    /* Stage 6: Spotify-Style Playlist & Player */
+    .spotify-shell {
+      display: grid;
+      grid-template-columns: 0.92fr 1.18fr;
+      gap: 16px;
+      border-radius: 24px;
+      padding: 18px;
+      background: linear-gradient(155deg, rgba(18, 24, 38, 0.84), rgba(10, 14, 24, 0.92));
+      border: 1px solid rgba(29, 185, 84, 0.34);
+    }
+    .sp-now-card {
+      border-radius: 20px;
+      padding: 18px;
+      background: linear-gradient(165deg, rgba(29, 185, 84, 0.2), rgba(15, 23, 42, 0.85));
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+    }
+    .sp-art {
+      width: 100%;
+      max-height: 150px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #1db954, #0f766e, #ff4d8d);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.45);
+      padding: 20px;
+    }
+    .sp-track-title { font-size: 1.15rem; font-weight: 800; color: #fff; }
+    .sp-track-artist { font-size: 12.5px; color: #b9f6ca; }
+    .sp-progress-wrap { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--muted); }
+    .sp-seek {
+      flex: 1;
+      accent-color: var(--spotify);
+      cursor: pointer;
+      height: 5px;
+    }
+    .sp-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .sp-play-main {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 0;
+      background: var(--spotify);
+      color: #06140b;
+      font-size: 15px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 20px rgba(29, 185, 84, 0.42);
+    }
+    .song-list {
+      display: grid;
+      gap: 8px;
+      max-height: 330px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .song-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 11px 14px;
+      border-radius: 14px;
+      text-align: left;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: background 0.18s ease, border-color 0.18s ease;
+    }
+    .song-row:hover { background: rgba(255, 255, 255, 0.09); }
+    .song-row.active {
+      background: rgba(29, 185, 84, 0.16);
+      border-color: var(--spotify);
+    }
+    .song-index {
+      width: 24px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--muted);
+    }
+    .song-row.active .song-index { color: var(--spotify); }
+    .song-tag { font-size: 11.5px; font-weight: 800; color: #86efac; white-space: nowrap; }
+
+    /* ============================================================
+       STAGE 7: OPEN CHARRED/CUT LETTER + MOVING DETAILED QUILL
+       ============================================================ */
+    .letter-shell {
+      border-radius: 24px;
+      padding: 20px;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+    .parchment-sheet {
+      position: relative;
+      margin-top: 12px;
+      padding: 26px 28px 30px;
+      border-radius: 8px;
+      background:
+        radial-gradient(circle at 8% 12%, rgba(92, 40, 10, 0.35), transparent 28%),
+        radial-gradient(circle at 92% 16%, rgba(74, 30, 8, 0.34), transparent 26%),
+        radial-gradient(circle at 14% 88%, rgba(78, 32, 9, 0.36), transparent 30%),
+        radial-gradient(circle at 88% 86%, rgba(96, 44, 12, 0.32), transparent 28%),
+        linear-gradient(175deg, #d7b174 0%, #f1dab0 18%, #e9ca93 78%, #cfa362 100%);
+      color: #231005;
+      border: 2px solid #3c1706;
+      box-shadow:
+        inset 0 0 38px rgba(46, 17, 4, 0.62),
+        inset 0 0 10px rgba(154, 54, 12, 0.4),
+        0 0 14px rgba(36, 13, 3, 0.9),
+        0 18px 34px rgba(0, 0, 0, 0.65);
+      overflow: hidden;
+    }
+    .parchment-sheet::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      box-shadow: inset 0 0 22px 6px rgba(38, 14, 3, 0.45);
+    }
+    .letter-writing-area {
+      position: relative;
+      z-index: 2;
+      font-family: 'Great Vibes', cursive;
+      font-size: 30px;
+      font-weight: 400;
+      line-height: 1.44;
+      color: #1c0c04;
+      text-shadow: 0 1px 0 rgba(255, 250, 232, 0.45);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .quill-caret-probe {
+      display: inline-block;
+      width: 2px;
+      height: 1em;
+      vertical-align: baseline;
+    }
+    .detailed-quill {
+      position: absolute;
+      top: 24px;
+      left: 28px;
+      z-index: 15;
+      width: 78px;
+      height: 78px;
+      pointer-events: none;
+      transform-origin: 10px 68px;
+      transform: translate(0px, 0px) rotate(-34deg);
+      transition: transform 0.05s linear;
+      filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.45));
+    }
+    .letter-big-love {
+      position: relative;
+      z-index: 2;
+      margin-top: 18px;
+      text-align: center;
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(3rem, 6.5vw, 4.5rem);
+      color: #881337;
+      line-height: 1.05;
+      text-shadow: 0 2px 10px rgba(136, 19, 55, 0.22);
+    }
+
+    .final-footer-credit {
+      margin-top: 14px;
+      text-align: center;
+      font-family: 'Great Vibes', cursive;
+      font-size: 2rem;
+      color: var(--gold);
+      line-height: 1.1;
+    }
+    .final-footer-credit span {
+      display: block;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--blush);
+      letter-spacing: 0.04em;
+    }
+
+    /* Sticky Bottom Music Bar */
+    .mini-player {
+      position: fixed;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 90;
+      width: min(560px, 94vw);
+      padding: 8px 14px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .mp-meta { min-width: 0; flex: 1; }
+    .mp-meta b { display: block; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mp-meta small { display: block; font-size: 11px; color: var(--aqua); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mp-btn {
+      width: 34px;
+      height: 34px;
+      font-size: 12.5px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed; inset: 0; z-index: 300;
+      background: rgba(2, 6, 20, 0.92);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 20px; gap: 12px;
+    }
+    .lightbox img { max-height: 76vh; border-radius: 16px; border: 1px solid var(--crystal-border); }
+    .lb-caption { font-family: 'Cinzel', serif; color: var(--gold); font-size: 15px; font-weight: 700; text-align: center; }
+    .lb-x {
+      position: absolute; top: 18px; right: 18px;
+      width: 40px; height: 40px; font-size: 16px;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+
+    @media (max-width: 900px) {
+      .pol-grid { grid-template-columns: repeat(2, minmax(150px, 1fr)); }
+      .fun-row { grid-template-columns: 1fr; }
+      .spotify-shell { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 820px) {
+      .hero-grid { grid-template-columns: 1fr; text-align: center; gap: 16px; }
+      .hero-copy, .hero-btns { margin-left: auto; margin-right: auto; justify-content: center; }
+      .hero-card img { max-height: 32dvh; }
+      .timer-grid { grid-template-columns: repeat(3, minmax(75px, 1fr)); }
+      .prince-corner-wrap { bottom: 62px; right: 8px; gap: 6px; }
+      .prince-hud { max-width: 175px; font-size: 10.8px; padding: 8px 10px; }
+      .prince-corner-img { width: 84px; max-height: 22dvh; }
+      .parchment-sheet { padding: 20px 18px 24px; }
+      .letter-writing-area { font-size: 25px; }
+      .detailed-quill { width: 64px; height: 64px; top: 18px; left: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ALWAYS-PRESENT CASTLE VIDEO LAYER (BECOMES BLURRED & TRANSLUCENT AT 30s) -->
+  <div id="video-bg-layer" class="video-bg-layer" aria-hidden="true">
+    <video id="intro-video" playsinline preload="auto">
+      <source src="disney2024.mp4" type="video/mp4">
+    </video>
+    <div class="video-bg-tint"></div>
+  </div>
+
+  <!-- Magical Night Sky: Twinkling Stars + Shooting Stars + Floating Teddys -->
+  <div id="sky-layer" class="sky-layer" aria-hidden="true">
+    <span class="shooting-star" style="top:9%; left:76%; --sdur:6.2s; --sdelay:0.4s;"></span>
+    <span class="shooting-star" style="top:22%; left:92%; --sdur:7.8s; --sdelay:2.6s;"></span>
+    <span class="shooting-star" style="top:38%; left:84%; --sdur:8.4s; --sdelay:4.9s;"></span>
+    <span class="ambient-item" style="top:14%; left:5%; --dur:11s; --delay:0s;">🧸</span>
+    <span class="ambient-item" style="top:26%; right:7%; --dur:13s; --delay:1.5s;">👑</span>
+    <span class="ambient-item" style="top:62%; left:4%; --dur:12s; --delay:2.5s;">🧸</span>
+    <span class="ambient-item" style="top:76%; right:6%; --dur:14s; --delay:0.8s;">✨</span>
+  </div>
+
+  <!-- SILENT FIRECRACKER BURSTS ACROSS THE WHOLE PAGE ON "YES" -->
+  <canvas id="fireworks-canvas"></canvas>
+
+  <!-- ============================================================
+       SCREEN 1: INTRO CONTROLS OVER THE PERSISTENT VIDEO LAYER
+       ============================================================ -->
+  <section id="screen-intro">
+    <div id="water-reveal" class="water-reveal">
+      <div class="water-shimmer-bar"></div>
+      <div class="disney-water-name">Riddhi</div>
+      <div class="disney-water-sub">PRINCESS DAY EDITION</div>
+      <div style="margin-top: 22px;">
+        <button id="continue-from-water-btn" class="btn btn-gold-3d" type="button">✨ Continue to Questions</button>
+      </div>
+    </div>
+
+    <div id="intro-gate" class="intro-start-gate">
+      <span class="pill">👑 PRINCESS DAY • FOR RIDDHI</span>
+      <div class="disney-water-name" style="font-size:clamp(3.8rem, 10vw, 6.4rem);">Riddhi</div>
+      <button id="start-intro-btn" class="btn btn-gold-3d" type="button">▶&nbsp; Start Intro &nbsp;🔊</button>
+    </div>
+
+    <button id="skip-intro-btn" class="intro-skip-btn crystal-3d" type="button">Skip to Name ▸</button>
+  </section>
+
+  <!-- ============================================================
+       SCREEN 2: ROMANTIC QUESTION & DODGING "NO" GAME
+       ============================================================ -->
+  <section id="screen-game" class="hidden">
+    <div class="game-card crystal-surface">
+      <img src="assets/images/riddhi-04.jpg" alt="Riddhi" class="game-avatar">
+      <div id="game-dots" class="game-dots"></div>
+      <span class="pill" id="game-step">ROUND 1 OF 4</span>
+      <h2 id="game-q" class="game-q"></h2>
+      <p id="game-sub" class="game-sub"></p>
+      <div id="dodge-badge" class="dodge-badge"></div>
+      <div id="game-actions" class="game-actions">
+        <button id="btn-yes" class="btn btn-rose-3d" type="button">💖 Yes, Always!</button>
+        <span class="no-placeholder"></span>
+      </div>
+      <p id="game-toast" class="game-toast"></p>
+    </div>
+    <button id="btn-no" class="btn-no-dodge crystal-3d" type="button">No 🙈</button>
+  </section>
+
+  <!-- ============================================================
+       NO-SCROLL MAIN PRINCESS DAY SITE (CLICK TABS TO OPEN STAGES)
+       ============================================================ -->
+  <div id="main-site" class="hidden">
+    <header class="navbar">
+      <button id="brand-home-btn" class="nav-brand" type="button">Riddhi <span>🧸👑</span></button>
+      <nav class="nav-tabs" aria-label="Sections">
+        <button class="crystal-3d nav-tab stage-tab active-tab" data-stage="stage-hero" type="button">👑 Spotlight</button>
+        <button class="crystal-3d nav-tab stage-tab" data-stage="stage-earth" type="button">⏳ Earth Time</button>
+        <button class="crystal-3d nav-tab stage-tab" data-stage="stage-gallery" type="button">🎠 Sliding Gallery</button>
+        <button class="crystal-3d nav-tab stage-tab" data-stage="stage-polaroids" type="button">📸 Polaroids</button>
+        <button class="crystal-3d nav-tab stage-tab" data-stage="stage-extras" type="button">🧸 Hugs &amp; Notes</button>
+        <button class="crystal-3d nav-tab stage-tab" data-stage="stage-songs" type="button">🎵 Songs</button>
+        <button class="crystal-3d nav-tab stage-tab" data-stage="stage-letter" type="button">💌 Letter</button>
+        <button id="replay-intro-btn" class="crystal-3d nav-tab" type="button">↻ Intro</button>
+      </nav>
+    </header>
+
+    <div class="stage-viewport">
+      <!-- STAGE 1: HERO SPOTLIGHT -->
+      <section id="stage-hero" class="stage-panel">
+        <div class="hero-grid">
+          <div>
+            <span class="pill">👑 HAPPY PRINCESS DAY • MY RIDDHI</span>
+            <h1 class="hero-name">Riddhi</h1>
+            <h2 class="hero-subtitle">A Royal Fairytale Written Around Your Smile</h2>
+            <p class="hero-copy">
+              Every glance at your pictures feels like stepping into a softer, brighter fairytale, Riddhi. Tap any crystal tab at the top to open Earth Time, Sliding Gallery, Polaroids, Hugs &amp; Notes, Songs, or Your Letter.
+            </p>
+            <div class="hero-btns">
+              <button class="btn btn-rose-3d" data-jump="stage-gallery" type="button">🎠 Open Sliding Gallery</button>
+              <button id="hug-btn" class="btn btn-gold-3d" type="button">🧸 Send Bear Hugs</button>
+            </div>
+          </div>
+
+          <div class="hero-card crystal-surface">
+            <img id="hero-main-img" src="assets/images/riddhi-04.jpg" alt="Riddhi — Cinderella Blue Vibe">
+            <div class="hero-princess-tag crystal-3d">💙 Cinderella Vibe • Riddhi</div>
+            <div class="hero-teddy-tag crystal-3d">🧸 Princess Riddhi • Forever</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- STAGE 2: HOW LONG THIS PRINCESS HAS GRACED THE EARTH -->
+      <section id="stage-earth" class="stage-panel hidden">
+        <div class="earth-timer-box">
+          <h2 class="sec-title">✨ How Long This Princess Has Graced the Earth ✨</h2>
+          <p class="sec-sub">Born 8 Jan 2010 at 18:18 — ticking live for every year, day, and second with Riddhi</p>
+          <div class="timer-grid">
+            <div class="t-cell"><b id="t-years">0</b><small>Years</small></div>
+            <div class="t-cell"><b id="t-days">0</b><small>Days</small></div>
+            <div class="t-cell"><b id="t-hours">00</b><small>Hours</small></div>
+            <div class="t-cell"><b id="t-mins">00</b><small>Minutes</small></div>
+            <div class="t-cell"><b id="t-secs">00</b><small>Seconds</small></div>
+            <div class="t-cell"><b id="t-total-days">0</b><small>Total Days</small></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- STAGE 3: SLIDING ROYAL GALLERY -->
+      <section id="stage-gallery" class="stage-panel hidden">
+        <div class="sec-head">
+          <div>
+            <h2 class="sec-title">🎠 Sliding Princess Gallery</h2>
+            <p class="sec-sub">Smoothly slides through Riddhi’s looks — tap any photo to view full size</p>
+          </div>
+          <div class="sec-actions">
+            <button id="slide-prev-btn" class="crystal-3d nav-tab" type="button">◀ Prev</button>
+            <button id="slide-next-btn" class="crystal-3d nav-tab" type="button">Next ▶</button>
+            <button id="slide-toggle-btn" class="crystal-3d nav-tab" type="button">❚❚ Pause Slide</button>
+            <button id="random-photo-btn" class="crystal-3d nav-tab" type="button">🎲 Surprise Photo</button>
+          </div>
+        </div>
+        <div class="slider-wrap crystal-surface">
+          <div id="slider-track" class="slider-track"></div>
+        </div>
+      </section>
+
+      <!-- STAGE 4: PERSONAL POLAROIDS -->
+      <section id="stage-polaroids" class="stage-panel hidden">
+        <div class="sec-head">
+          <div>
+            <h2 class="sec-title">📸 Personal Polaroids</h2>
+            <p class="sec-sub">Tap any polaroid to flip and read what comes to mind looking at her picture</p>
+          </div>
+          <button id="flip-all-btn" class="crystal-3d nav-tab" type="button">🔄 Flip All</button>
+        </div>
+        <div id="polaroid-grid" class="pol-grid"></div>
+      </section>
+
+      <!-- STAGE 5: TEDDY HUG METER & PRINCESS NOTES -->
+      <section id="stage-extras" class="stage-panel hidden">
+        <div class="sec-head">
+          <div>
+            <h2 class="sec-title">🧸 Teddy Hugs &amp; Sweet Notes</h2>
+            <p class="sec-sub">Send hugs and cycle through little lines inspired by Riddhi</p>
+          </div>
+        </div>
+        <div class="fun-row">
+          <div class="fun-box crystal-surface">
+            <h3>🧸 Fluffy Teddy Hug Meter</h3>
+            <p class="muted" style="font-size:13px;">Send extra bear hugs to Riddhi whenever she needs one</p>
+            <div id="hug-count" style="font-size:1.9rem; font-weight:800; color:var(--gold);">0 Hugs Sent</div>
+            <button id="meter-hug-btn" class="btn btn-gold-3d" type="button">🧸 Hug Riddhi</button>
+          </div>
+          <div class="fun-box crystal-surface">
+            <h3>👑 Little Note About You</h3>
+            <p class="muted" style="font-size:13px;">Tap for a sweet line inspired by your princess aura</p>
+            <div id="compliment-text" class="fun-quote">“Some smiles make the whole room feel warmer the second they appear.”</div>
+            <button id="next-compliment-btn" class="btn btn-rose-3d" type="button">✨ Next Note</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- STAGE 6: SPOTIFY-STYLE SONGS PLAYLIST -->
+      <section id="stage-songs" class="stage-panel hidden">
+        <div class="sec-head">
+          <div>
+            <h2 class="sec-title">🎧 Riddhi’s Royal Playlist</h2>
+            <p id="audio-status" class="sec-sub">Add more tracks anytime inside the <code>songs</code> array in code</p>
+          </div>
+        </div>
+        <div class="spotify-shell">
+          <div class="sp-now-card">
+            <div id="sp-art" class="sp-art">🎶</div>
+            <div>
+              <div id="sp-title" class="sp-track-title">Agar Tum Saath Ho</div>
+              <div id="sp-artist" class="sp-track-artist">Alka Yagnik &amp; Arijit Singh • Tamasha</div>
+            </div>
+            <div class="sp-progress-wrap">
+              <span id="sp-cur-time">0:00</span>
+              <input id="sp-seek" class="sp-seek" type="range" min="0" max="100" value="0" step="0.1" aria-label="Seek track">
+              <span id="sp-dur-time">0:00</span>
+            </div>
+            <div class="sp-controls">
+              <button id="sp-prev" class="mp-btn crystal-3d" type="button" aria-label="Previous track">⏮</button>
+              <button id="sp-play" class="sp-play-main" type="button" aria-label="Play or pause">▶</button>
+              <button id="sp-next" class="mp-btn crystal-3d" type="button" aria-label="Next track">⏭</button>
+            </div>
+          </div>
+          <div id="song-list" class="song-list"></div>
+        </div>
+      </section>
+
+      <!-- STAGE 7: OPEN CHARRED/CUT PARCHMENT LETTER + MOVING DETAILED QUILL -->
+      <section id="stage-letter" class="stage-panel hidden">
+        <div class="letter-shell crystal-surface">
+          <div class="sec-head">
+            <div>
+              <h2 class="sec-title">💌 Letter for Riddhi</h2>
+            </div>
+            <button id="replay-letter-btn" class="crystal-3d nav-tab" type="button">✒ Write Again</button>
+          </div>
+
+          <div id="parchment-sheet" class="parchment-sheet">
+            <svg id="detailed-quill" class="detailed-quill" viewBox="0 0 80 80" aria-hidden="true">
+              <defs>
+                <linearGradient id="plumeGrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#fffdf7"/>
+                  <stop offset="55%" stop-color="#f5e6c4"/>
+                  <stop offset="100%" stop-color="#d4b475"/>
+                </linearGradient>
+                <linearGradient id="nibGrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#fbbf24"/>
+                  <stop offset="100%" stop-color="#92400e"/>
+                </linearGradient>
+              </defs>
+              <path d="M18 56 C16 34, 34 12, 70 8 C64 26, 52 44, 28 58 Z" fill="url(#plumeGrad)" stroke="#7c5325" stroke-width="1.2"/>
+              <g stroke="#b08247" stroke-width="0.8" opacity="0.72" fill="none">
+                <path d="M30 44 L44 36"/>
+                <path d="M38 35 L54 27"/>
+                <path d="M46 26 L62 18"/>
+                <path d="M26 50 L38 48"/>
+                <path d="M35 42 L49 40"/>
+                <path d="M44 33 L58 30"/>
+              </g>
+              <path d="M68 10 L16 61" stroke="#854d0e" stroke-width="2.1" stroke-linecap="round"/>
+              <path d="M18 57 L8 70 L21 61 Z" fill="url(#nibGrad)" stroke="#451a03" stroke-width="1"/>
+              <circle cx="8" cy="70" r="1.5" fill="#1c0c04"/>
+            </svg>
+
+            <div id="letter-writing-area" class="letter-writing-area"><span id="quill-caret" class="quill-caret-probe"></span></div>
+            <div id="letter-big-love" class="letter-big-love hidden">I Love You ❤️</div>
+          </div>
+        </div>
+        <footer class="final-footer-credit">
+          Riddhi • Princess Day
+          <span>Created by Aditya</span>
+        </footer>
+      </section>
+    </div>
+
+    <!-- CORNER PRINCE (assets/prince/prince image 1..4.png) -->
+    <div id="prince-corner-wrap" class="prince-corner-wrap">
+      <div id="prince-hud" class="prince-hud">
+        <div class="prince-hud-title">FLYNN’S THOUGHTS FOR RIDDHI</div>
+        <div id="prince-msg">“Honestly? Just seeing Riddhi’s name light up the spotlight makes the whole quest worth it.”</div>
+        <div class="prince-hud-actions">
+          <button id="prince-thought-btn" class="prince-chip" type="button">💭 Next Thought</button>
+          <button id="prince-next-btn" class="prince-chip" type="button">Earth Time ▸</button>
+        </div>
+      </div>
+      <img id="prince-corner-img" class="prince-corner-img" src="assets/prince/prince image 1.png" alt="Prince">
+    </div>
+  </div>
+
+  <!-- STICKY BOTTOM MUSIC BAR -->
+  <div id="mini-player" class="mini-player crystal-surface hidden">
+    <div class="mp-meta">
+      <b id="mp-title">Agar Tum Saath Ho</b>
+      <small id="mp-artist">Alka Yagnik &amp; Arijit Singh</small>
+    </div>
+    <button id="mp-prev" class="mp-btn crystal-3d" type="button" aria-label="Previous song">⏮</button>
+    <button id="mp-play" class="mp-btn crystal-3d" type="button" aria-label="Play or pause">▶</button>
+    <button id="mp-next" class="mp-btn crystal-3d" type="button" aria-label="Next song">⏭</button>
+  </div>
+
+  <!-- LIGHTBOX -->
+  <div id="lightbox" class="lightbox hidden" role="dialog" aria-modal="true">
+    <button id="lb-close" class="lb-x crystal-3d" type="button" aria-label="Close">✕</button>
+    <img id="lb-img" src="" alt="Riddhi photo">
+    <div id="lb-caption" class="lb-caption"></div>
+  </div>
+
+  <audio id="audio-el" preload="metadata"></audio>
+
+  <script>
+    (function () {
+      const $ = (s, r = document) => r.querySelector(s);
+      const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+
+      // ============================================================
+      // 1) RIDDHI'S EXACT BIRTH DATE & TIME: 8 JAN 2010 AT 18:18
+      // ============================================================
+      const RIDDHI_BIRTH_ISO = '2010-01-08T18:18:00';
+
+      // ============================================================
+      // 2) LETTER FOR RIDDHI (TERMS SPREAD NATURALLY IN THE LETTER)
+      // ============================================================
+      const RIDDHI_LETTER = `Hi love,
+
+Whenever I sit quietly and think about how my days have changed, I realize just how truly blessed I am to have you in my life. Having you near feels like finding calm light in the middle of so much noise, and every moment connected to you makes me grateful in ways ordinary words barely touch.
+
+There is a gentleness in you, meri mohtarma, that makes even a tiring day feel softer. You have a quiet charm that stays in my mind long after I smile at your pictures, and I never take for granted how naturally you make things brighter just by being yourself.
+
+Whenever I think of how cared for and warm it feels to have you around, sweetie, I catch myself smiling without even realizing it. You bring this soft, comforting energy that feels so rare and precious.
+
+And when you act all adorable and effortless, cutie, it reminds me how lucky I am that my heart found someone so special. Every little detail about you feels worth holding onto.
+
+Thank you for being there, mommy, and for making my world feel richer and fuller than I ever expected. No matter how much time moves forward, how blessed I feel having you will always stay the same.`;
+
+      // ============================================================
+      // 3) YOUR 4 PRINCE IMAGES INSIDE assets/prince/
+      // ============================================================
+      const PRINCE_IMAGES = [
+        'assets/prince/prince image 1.png',
+        'assets/prince/prince image 2.png',
+        'assets/prince/prince image 3.png',
+        'assets/prince/prince image 4.png'
+      ];
+
+      // ============================================================
+      // 4) SONGS IN SEQUENCE (1-3 + 4-10)
+      // ============================================================
+      const songs = [
+        { title: 'Agar Tum Saath Ho', artist: 'Alka Yagnik & Arijit Singh • Tamasha', cover: '🎬', src: 'assets/audio/song-1.mp3' },
+        { title: 'Shape of You', artist: 'Ed Sheeran', cover: '✨', src: 'assets/audio/song-2.mp3' },
+        { title: 'Tera Deedar Hua', artist: 'Pritam & Rahat Fateh Ali Khan • Jannat 2', cover: '🌙', src: 'assets/audio/song-3.mp3' },
+        { title: 'BTS - Body to Body, but Hobi never says what he needs', artist: 'Track #4', cover: '🔥', src: 'assets/audio/song-4.mp3' },
+        { title: "They don't know bout us-BTS", artist: 'Track #5', cover: '💜', src: 'assets/audio/song-5.mp3' },
+        { title: 'Jump-BTS', artist: 'Track #6', cover: '⚡', src: 'assets/audio/song-6.mp3' },
+        { title: 'Hooligan-BTS', artist: 'Track #7', cover: '👑', src: 'assets/audio/song-7.mp3' },
+        { title: 'IDOL', artist: 'Track #8', cover: '🎉', src: 'assets/audio/song-8.mp3' },
+        { title: 'Like Animals-BTS', artist: 'Track #9', cover: '🐾', src: 'assets/audio/song-9.mp3' },
+        { title: '[BTS] JK - 10000 Hours (원곡 _ Justin Bieber)', artist: 'Track #10', cover: '💫', src: 'assets/audio/song-10.mp3' }
+      ];
+
+      const STOP_AT_SECONDS = 30;
+
+      // Populate twinkling stars across the night sky
+      const sky = $('#sky-layer');
+      for (let i = 0; i < 42; i++) {
+        const st = document.createElement('span');
+        st.className = 'star';
+        const size = (1.5 + Math.random() * 2.2).toFixed(1);
+        st.style.cssText = `
+          width:${size}px; height:${size}px;
+          top:${(Math.random() * 88).toFixed(1)}%;
+          left:${(Math.random() * 98).toFixed(1)}%;
+          --tw:${(2.4 + Math.random() * 3.5).toFixed(1)}s;
+          animation-delay:${(Math.random() * 3).toFixed(1)}s;
+        `;
+        sky.appendChild(st);
+      }
+
+      // ============================================================
+      // FULL-PAGE SILENT FIRECRACKER BURSTS ON "YES"
+      // ============================================================
+      const fwCanvas = $('#fireworks-canvas');
+      const fwCtx = fwCanvas.getContext('2d');
+      let sparks = [];
+      let fwRaf = null;
+
+      function resizeFw() {
+        fwCanvas.width = window.innerWidth;
+        fwCanvas.height = window.innerHeight;
+      }
+      resizeFw();
+      window.addEventListener('resize', resizeFw);
+
+      function burstFirecrackers(bursts = 7) {
+        const palette = ['#ffd166', '#ff4d8d', '#7dd3fc', '#fff1b8', '#c084fc', '#ff9ebb'];
+        for (let b = 0; b < bursts; b++) {
+          const cx = fwCanvas.width * (0.08 + Math.random() * 0.84);
+          const cy = fwCanvas.height * (0.1 + Math.random() * 0.72);
+          for (let i = 0; i < 42; i++) {
+            const angle = (Math.PI * 2 * i) / 42 + (Math.random() - 0.5) * 0.2;
+            const speed = 2.5 + Math.random() * 6.2;
+            sparks.push({
+              x: cx,
+              y: cy,
+              vx: Math.cos(angle) * speed,
+              vy: Math.sin(angle) * speed,
+              alpha: 1,
+              decay: 0.015 + Math.random() * 0.012,
+              size: 2.2 + Math.random() * 2.6,
+              color: palette[(i + b) % palette.length]
+            });
+          }
+        }
+        if (!fwRaf) tickFireworks();
+      }
+
+      function tickFireworks() {
+        fwCtx.clearRect(0, 0, fwCanvas.width, fwCanvas.height);
+        sparks = sparks.filter((p) => p.alpha > 0.02);
+        for (const p of sparks) {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.085;
+          p.vx *= 0.986;
+          p.alpha -= p.decay;
+          fwCtx.save();
+          fwCtx.globalAlpha = Math.max(0, p.alpha);
+          fwCtx.fillStyle = p.color;
+          fwCtx.shadowColor = p.color;
+          fwCtx.shadowBlur = 12;
+          fwCtx.beginPath();
+          fwCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          fwCtx.fill();
+          fwCtx.restore();
+        }
+        if (sparks.length > 0) {
+          fwRaf = requestAnimationFrame(tickFireworks);
+        } else {
+          fwCtx.clearRect(0, 0, fwCanvas.width, fwCanvas.height);
+          fwRaf = null;
+        }
+      }
+
+      const fallbackImg = (label) =>
+        'data:image/svg+xml;utf8,' +
+        encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="600" height="800" viewBox="0 0 600 800">
+          <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#291742"/><stop offset="100%" stop-color="#110920"/>
+          </linearGradient></defs>
+          <rect width="600" height="800" fill="url(#bg)"/>
+          <text x="300" y="370" text-anchor="middle" fill="#ffd166" font-size="64">🧸👑</text>
+          <text x="300" y="445" text-anchor="middle" fill="#fff6fa" font-family="sans-serif" font-size="26" font-weight="bold">${label}</text>
+          <text x="300" y="485" text-anchor="middle" fill="#bae6fd" font-family="sans-serif" font-size="16">assets/images/</text>
+        </svg>`);
+
+      function safeImg(img, label) {
+        img.addEventListener('error', () => {
+          if (img.dataset.fb) return;
+          img.dataset.fb = '1';
+          img.src = fallbackImg(label);
+        });
+      }
+
+      // ============================================================
+      // CORNER PRINCE (assets/prince/prince image 1..4.png)
+      // ============================================================
+      const princeFallbackSvg = (num) =>
+        'data:image/svg+xml;utf8,' +
+        encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="260" height="320" viewBox="0 0 260 320">
+          <defs>
+            <linearGradient id="vest" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#1e6b7b"/><stop offset="100%" stop-color="#0f3b47"/>
+            </linearGradient>
+          </defs>
+          <ellipse cx="130" cy="302" rx="64" ry="12" fill="rgba(0,0,0,0.45)"/>
+          <path d="M92 292 L102 198 L158 198 L168 292 Z" fill="#5c4b32"/>
+          <path d="M84 126 Q130 112 176 126 L166 206 L94 206 Z" fill="url(#vest)"/>
+          <path d="M84 128 L58 178 L86 190 L98 152 Z" fill="#f3efe8"/>
+          <path d="M176 128 L202 178 L174 190 L162 152 Z" fill="#f3efe8"/>
+          <rect x="92" y="192" width="76" height="12" rx="4" fill="#6b3e1e"/>
+          <rect x="120" y="190" width="20" height="16" rx="3" fill="#ffd166"/>
+          <circle cx="130" cy="84" r="34" fill="#f5c6a5"/>
+          <path d="M96 78 Q98 42 134 42 Q166 44 164 80 Q154 62 132 62 Q108 62 96 78 Z" fill="#4a2c18"/>
+          <circle cx="118" cy="84" r="4" fill="#2b180c"/>
+          <circle cx="142" cy="84" r="4" fill="#2b180c"/>
+          <path d="M118 99 Q130 108 143 98" fill="none" stroke="#8c4a27" stroke-width="3" stroke-linecap="round"/>
+          <text x="130" y="24" text-anchor="middle" fill="#ffd166" font-family="sans-serif" font-size="13" font-weight="bold">Prince #${num}</text>
+        </svg>`);
+
+      const stagePrinceInfo = {
+        'stage-hero': {
+          pose: 0,
+          thought: '“Honestly? Just seeing Riddhi’s name light up the spotlight makes the whole quest worth it.”',
+          nextStage: 'stage-earth',
+          nextLabel: 'Earth Time ▸'
+        },
+        'stage-earth': {
+          pose: 1,
+          thought: '“Every single second since Jan 8, 2010 at 18:18 has been counting up to a pretty amazing princess.”',
+          nextStage: 'stage-gallery',
+          nextLabel: 'Gallery ▸'
+        },
+        'stage-gallery': {
+          pose: 2,
+          thought: '“Okay, I’ve faced towers and bandits, but Riddhi’s photo gallery is next-level royal.”',
+          nextStage: 'stage-polaroids',
+          nextLabel: 'Polaroids ▸'
+        },
+        'stage-polaroids': {
+          pose: 3,
+          thought: '“Flip a polaroid—every picture holds a quiet little thought about how bright she looks.”',
+          nextStage: 'stage-extras',
+          nextLabel: 'Hugs & Notes ▸'
+        },
+        'stage-extras': {
+          pose: 1,
+          thought: '“Send a few extra bear hugs to Riddhi—even a prince knows hugs fix half the day.”',
+          nextStage: 'stage-songs',
+          nextLabel: 'Songs ▸'
+        },
+        'stage-songs': {
+          pose: 2,
+          thought: '“Queue up a song on the playlist and let the mood settle in for Riddhi.”',
+          nextStage: 'stage-letter',
+          nextLabel: 'Letter ▸'
+        },
+        'stage-letter': {
+          pose: 3,
+          thought: '“Watch the quill write every letter for Riddhi right across the page.”',
+          nextStage: 'stage-hero',
+          nextLabel: 'Spotlight ▸'
+        }
+      };
+
+      const extraPrinceThoughts = [
+        '“I’m still working on the signature smolder, Riddhi—though your smile beats it easily.”',
+        '“If there’s a royal lantern wish tonight, it’s that your days stay light, happy, and full of laughter.”',
+        '“No rope needed here—just tapping through every corner made for Riddhi.”',
+        '“You can add more songs anytime in the playlist and keep the soundtrack going.”'
+      ];
+
+      let princePoseIdx = 0;
+      let extraThoughtIdx = 0;
+      const princeImgEl = $('#prince-corner-img');
+
+      function setPrinceImage(idx) {
+        princePoseIdx = ((idx % PRINCE_IMAGES.length) + PRINCE_IMAGES.length) % PRINCE_IMAGES.length;
+        const primary = PRINCE_IMAGES[princePoseIdx];
+        const num = princePoseIdx + 1;
+        const candidates = [
+          primary,
+          encodeURI(primary),
+          `assets/prince/prince_image_${num}.png`,
+          `assets/prince/prince-image-${num}.png`,
+          `assets/prince/prince${num}.png`,
+          `assets/prince/${num}.png`
+        ];
+        let cIdx = 0;
+        princeImgEl.onerror = () => {
+          cIdx++;
+          if (cIdx < candidates.length) {
+            princeImgEl.src = candidates[cIdx];
+          } else {
+            princeImgEl.onerror = null;
+            princeImgEl.src = princeFallbackSvg(num);
+          }
+        };
+        princeImgEl.src = candidates[0];
+      }
+
+      function bumpPrince(text, poseIdx) {
+        if (typeof poseIdx === 'number') setPrinceImage(poseIdx);
+        if (text) $('#prince-msg').textContent = text;
+        princeImgEl.classList.add('excited');
+        clearTimeout(bumpPrince._t);
+        bumpPrince._t = setTimeout(() => princeImgEl.classList.remove('excited'), 900);
+      }
+
+      function syncPrinceToStage(stageId) {
+        const info = stagePrinceInfo[stageId] || stagePrinceInfo['stage-hero'];
+        $('#prince-next-btn').textContent = info.nextLabel;
+        $('#prince-next-btn').dataset.jump = info.nextStage;
+        bumpPrince(info.thought, info.pose);
+      }
+
+      $('#prince-thought-btn').addEventListener('click', () => {
+        const nextPose = (princePoseIdx + 1) % PRINCE_IMAGES.length;
+        const line = extraPrinceThoughts[extraThoughtIdx % extraPrinceThoughts.length];
+        extraThoughtIdx++;
+        bumpPrince(line, nextPose);
+      });
+
+      setPrinceImage(0);
+
+      // ============================================================
+      // OPEN LETTER + DETAILED QUILL MOVING WITH EVERY SINGLE LETTER
+      // ============================================================
+      const sheetEl = $('#parchment-sheet');
+      const areaEl = $('#letter-writing-area');
+      const caretEl = $('#quill-caret');
+      const quillEl = $('#detailed-quill');
+      const bigLoveEl = $('#letter-big-love');
+
+      let letterTimer = null;
+      let letterPos = 0;
+      let strokeStep = 0;
+
+      function positionQuillAtCaret() {
+        const sheetRect = sheetEl.getBoundingClientRect();
+        const caretRect = caretEl.getBoundingClientRect();
+        if (!sheetRect.width || !caretRect.width) return;
+
+        const x = (caretRect.left - sheetRect.left) - 8;
+        const y = (caretRect.top - sheetRect.top) + (caretRect.height * 0.72) - 70;
+        strokeStep++;
+        const tilt = strokeStep % 2 === 0 ? -36 : -30;
+
+        quillEl.style.transform = `translate(${Math.round(x)}px, ${Math.round(y)}px) rotate(${tilt}deg)`;
+      }
+
+      function stopLetterWriter() {
+        if (letterTimer) {
+          clearInterval(letterTimer);
+          letterTimer = null;
+        }
+      }
+
+      function startLetterWriter() {
+        stopLetterWriter();
+        letterPos = 0;
+        strokeStep = 0;
+        areaEl.innerHTML = '';
+        areaEl.appendChild(caretEl);
+        bigLoveEl.classList.add('hidden');
+        quillEl.classList.remove('hidden');
+        positionQuillAtCaret();
+
+        letterTimer = setInterval(() => {
+          if (letterPos >= RIDDHI_LETTER.length) {
+            stopLetterWriter();
+            quillEl.classList.add('hidden');
+            bigLoveEl.classList.remove('hidden');
+            return;
+          }
+          const ch = RIDDHI_LETTER[letterPos];
+          const textNode = document.createTextNode(ch);
+          areaEl.insertBefore(textNode, caretEl);
+          letterPos++;
+          positionQuillAtCaret();
+        }, 28);
+      }
+
+      $('#replay-letter-btn').addEventListener('click', startLetterWriter);
+      window.addEventListener('resize', () => {
+        if (!$('#stage-letter').classList.contains('hidden') && !quillEl.classList.contains('hidden')) {
+          positionQuillAtCaret();
+        }
+      });
+
+      // NO-SCROLL STAGE SWITCHER
+      function showStage(stageId) {
+        if (stageId !== 'stage-letter') {
+          stopLetterWriter();
+        }
+        $$('.stage-panel').forEach((panel) => {
+          panel.classList.toggle('hidden', panel.id !== stageId);
+          panel.scrollTop = 0;
+        });
+        $$('.stage-tab').forEach((tab) => {
+          tab.classList.toggle('active-tab', tab.dataset.stage === stageId);
+        });
+        syncPrinceToStage(stageId);
+
+        if (stageId === 'stage-letter') {
+          requestAnimationFrame(() => startLetterWriter());
+        }
+      }
+
+      $$('.stage-tab[data-stage]').forEach((tab) => {
+        tab.addEventListener('click', () => showStage(tab.dataset.stage));
+      });
+      $$('[data-jump]').forEach((btn) => {
+        btn.addEventListener('click', () => showStage(btn.dataset.jump));
+      });
+      $('#brand-home-btn').addEventListener('click', () => showStage('stage-hero'));
+
+      // Live counter: how long this princess has graced the earth (from 8 Jan 2010 18:18)
+      function updateEarthTimer() {
+        const birth = new Date(RIDDHI_BIRTH_ISO).getTime();
+        const diff = Math.max(0, Date.now() - birth);
+        const totalSecs = Math.floor(diff / 1000);
+        const totalDays = Math.floor(totalSecs / 86400);
+        const years = Math.floor(totalDays / 365.2425);
+        const remDays = Math.floor(totalDays - years * 365.2425);
+        const hours = Math.floor((totalSecs % 86400) / 3600);
+        const mins = Math.floor((totalSecs % 3600) / 60);
+        const secs = totalSecs % 60;
+
+        $('#t-years').textContent = years;
+        $('#t-days').textContent = remDays;
+        $('#t-hours').textContent = String(hours).padStart(2, '0');
+        $('#t-mins').textContent = String(mins).padStart(2, '0');
+        $('#t-secs').textContent = String(secs).padStart(2, '0');
+        $('#t-total-days').textContent = totalDays.toLocaleString();
+      }
+      updateEarthTimer();
+      setInterval(updateEarthTimer, 1000);
+
+      // INTRO VIDEO (STOPS AT 30s -> IMMEDIATELY BLURRED CASTLE BACKDROP)
+      const video = $('#intro-video');
+      const bgLayer = $('#video-bg-layer');
+      const screenIntro = $('#screen-intro');
+      const introGate = $('#intro-gate');
+      const waterReveal = $('#water-reveal');
+      const skipBtn = $('#skip-intro-btn');
+      let revealTriggered = false;
+
+      function triggerWaterReveal() {
+        if (revealTriggered) return;
+        revealTriggered = true;
+        try { video.pause(); } catch (_) {}
+        bgLayer.classList.add('castle-backdrop');
+        skipBtn.classList.add('hide-skip');
+        waterReveal.classList.add('show');
+      }
+
+      function openQuestionGame() {
+        screenIntro.classList.add('fade-out');
+        $('#screen-game').classList.remove('hidden');
+        renderQuestionRound();
+        requestAnimationFrame(placeNoButton);
+      }
+
+      $('#start-intro-btn').addEventListener('click', () => {
+        revealTriggered = false;
+        bgLayer.classList.remove('castle-backdrop');
+        waterReveal.classList.remove('show');
+        skipBtn.classList.remove('hide-skip');
+        introGate.classList.add('hide');
+        try {
+          video.currentTime = 0;
+          const p = video.play();
+          if (p && typeof p.catch === 'function') {
+            p.catch(() => triggerWaterReveal());
+          }
+        } catch (_) {
+          triggerWaterReveal();
+        }
+      });
+
+      video.addEventListener('timeupdate', () => {
+        if (video.currentTime >= STOP_AT_SECONDS) {
+          triggerWaterReveal();
+        }
+      });
+      video.addEventListener('ended', triggerWaterReveal);
+      video.addEventListener('error', triggerWaterReveal);
+      skipBtn.addEventListener('click', triggerWaterReveal);
+      $('#continue-from-water-btn').addEventListener('click', openQuestionGame);
+
+      $('#replay-intro-btn').addEventListener('click', () => {
+        $('#main-site').classList.add('hidden');
+        $('#mini-player').classList.add('hidden');
+        screenIntro.classList.remove('fade-out');
+        introGate.classList.add('hide');
+        revealTriggered = false;
+        bgLayer.classList.remove('castle-backdrop');
+        waterReveal.classList.remove('show');
+        skipBtn.classList.remove('hide-skip');
+        try {
+          video.currentTime = 0;
+          const p = video.play();
+          if (p && typeof p.catch === 'function') p.catch(() => triggerWaterReveal());
+        } catch (_) {
+          triggerWaterReveal();
+        }
+      });
+
+      // ROMANTIC QUESTION & DODGING "NO" GAME
+      const rounds = [
+        { q: 'Do you realize how much warmth you bring just by existing, Riddhi?', sub: 'The No button always slips away when honesty enters 👀' },
+        { q: 'Can I keep you wrapped in bear hugs and care every single day?', sub: 'Princess Day rules say hugs are mandatory 🧸' },
+        { q: 'Does one glimpse of your smile still turn a heavy day soft and bright?', sub: 'Try to tap No if you think you can catch it 😏' },
+        { q: 'Will you stay my favourite princess today and always?', sub: 'Tap Yes to open your Princess Day world 💖' }
+      ];
+      const dodgeLines = [
+        'Nice try! 😜', 'No button went to hug a teddy 🧸', 'Too quick for No! ✨',
+        'That button refuses to cooperate 🙈', 'Tap Yes instead 💖'
+      ];
+      const yesReplies = ['Always and forever! 👑', 'Bear hug locked in! 🧸', 'Every single time ✨', 'Welcome, Princess Riddhi! 💖'];
+
+      let roundIdx = 0;
+      let dodgeCount = 0;
+      let lastDodgeTime = 0;
+      let lockedRound = false;
+
+      const btnNo = $('#btn-no');
+      const btnYes = $('#btn-yes');
+
+      function renderQuestionRound() {
+        const item = rounds[roundIdx];
+        dodgeCount = 0;
+        lockedRound = false;
+        $('#game-actions').classList.remove('moved');
+        $('#game-step').textContent = `ROUND ${roundIdx + 1} OF ${rounds.length}`;
+        $('#game-q').textContent = item.q;
+        $('#game-sub').textContent = item.sub;
+        $('#game-toast').textContent = '';
+        $('#dodge-badge').classList.remove('show');
+        btnYes.style.transform = 'translateY(-2px) scale(1)';
+        btnNo.style.transform = 'translateY(-2px) scale(1)';
+        $('#game-dots').innerHTML = rounds.map((_, i) =>
+          `<i class="${i < roundIdx ? 'done' : i === roundIdx ? 'now' : ''}"></i>`
+        ).join('');
+      }
+
+      function placeNoButton() {
+        const slot = $('.no-placeholder', $('#game-actions'));
+        if (!slot) return;
+        const rect = slot.getBoundingClientRect();
+        btnNo.style.left = Math.round(rect.left + (rect.width - btnNo.offsetWidth) / 2) + 'px';
+        btnNo.style.top = Math.round(rect.top + (rect.height - btnNo.offsetHeight) / 2) + 'px';
+      }
+
+      function dodgeNoButton(ev) {
+        if (ev && ev.cancelable) ev.preventDefault();
+        const now = Date.now();
+        if (now - lastDodgeTime < 170) return;
+        lastDodgeTime = now;
+        dodgeCount++;
+        $('#game-actions').classList.add('moved');
+
+        const pad = 12;
+        const w = btnNo.offsetWidth;
+        const h = btnNo.offsetHeight;
+        const maxX = Math.max(pad, window.innerWidth - w - pad);
+        const maxY = Math.max(pad, window.innerHeight - h - pad);
+        const yesRect = btnYes.getBoundingClientRect();
+
+        let x = pad;
+        let y = pad;
+        for (let t = 0; t < 40; t++) {
+          x = pad + Math.random() * (maxX - pad);
+          y = pad + Math.random() * (maxY - pad);
+          const overlapsYes = x < yesRect.right + 16 && x + w > yesRect.left - 16 &&
+                              y < yesRect.bottom + 16 && y + h > yesRect.top - 16;
+          if (!overlapsYes) break;
+        }
+
+        btnNo.style.left = Math.round(x) + 'px';
+        btnNo.style.top = Math.round(y) + 'px';
+        btnYes.style.transform = `translateY(-2px) scale(${Math.min(1.32, 1 + dodgeCount * 0.05).toFixed(2)})`;
+        btnNo.style.transform = `translateY(-2px) scale(${Math.max(0.68, 1 - dodgeCount * 0.05).toFixed(2)})`;
+
+        const badge = $('#dodge-badge');
+        badge.textContent = dodgeLines[(dodgeCount - 1) % dodgeLines.length];
+        badge.classList.add('show');
+      }
+
+      btnNo.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') dodgeNoButton(e); });
+      btnNo.addEventListener('pointerdown', dodgeNoButton);
+      btnNo.addEventListener('touchstart', dodgeNoButton, { passive: false });
+      btnNo.addEventListener('click', dodgeNoButton);
+      window.addEventListener('resize', () => {
+        if (!$('#screen-game').classList.contains('hidden') && dodgeCount === 0) placeNoButton();
+      });
+
+      // ============================================================
+      // SPOTIFY-STYLE PLAYLIST + AUDIO PLAYER
+      // ============================================================
+      const audio = $('#audio-el');
+      let songIdx = 0;
+
+      function fmtTime(sec) {
+        if (!Number.isFinite(sec) || sec < 0) return '0:00';
+        const m = Math.floor(sec / 60);
+        const s = Math.floor(sec % 60);
+        return `${m}:${String(s).padStart(2, '0')}`;
+      }
+
+      function renderPlaylist() {
+        $('#song-list').innerHTML = songs.map((s, i) => `
+          <button class="song-row" type="button" data-i="${i}">
+            <span class="song-index">${i + 1}</span>
+            <span style="font-size:20px;">${s.cover || '🎵'}</span>
+            <div style="flex:1; min-width:0;">
+              <b style="display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${s.title}</b>
+              <small class="muted" style="display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${s.artist}</small>
+            </div>
+            <span class="song-tag" id="song-tag-${i}">▶ Play</span>
+          </button>`).join('');
+
+        $$('.song-row').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const i = +btn.dataset.i;
+            if (songIdx === i && !audio.paused) audio.pause();
+            else playTrack(i);
+            syncPlayer();
+          });
+        });
+      }
+      renderPlaylist();
+
+      function syncPlayer(statusMsg) {
+        if (!songs.length) return;
+        const cur = songs[songIdx] || songs[0];
+        const playing = !audio.paused && !audio.ended;
+        const icon = playing ? '❚❚' : '▶';
+
+        $('#mp-title').textContent = cur.title;
+        $('#mp-artist').textContent = statusMsg || cur.artist;
+        $('#mp-play').textContent = icon;
+
+        $('#sp-art').textContent = cur.cover || '🎶';
+        $('#sp-title').textContent = cur.title;
+        $('#sp-artist').textContent = statusMsg || cur.artist;
+        $('#sp-play').textContent = icon;
+
+        $$('.song-row').forEach((row, i) => {
+          row.classList.toggle('active', i === songIdx);
+          const tag = $(`#song-tag-${i}`, row);
+          if (tag) tag.textContent = (i === songIdx && playing) ? '❚❚ Playing' : '▶ Play';
+        });
+      }
+
+      function playTrack(i) {
+        if (!songs.length) return;
+        songIdx = ((i % songs.length) + songs.length) % songs.length;
+        const track = songs[songIdx];
+        if (!track.src) return;
+        audio.src = encodeURI(track.src);
+        audio.load();
+        const p = audio.play();
+        if (p && typeof p.then === 'function') {
+          p.then(() => {
+            $('#audio-status').textContent = `Now playing: ${track.title}`;
+            syncPlayer();
+          }).catch(() => {
+            syncPlayer();
+          });
+        }
+        syncPlayer();
+      }
+
+      audio.addEventListener('loadedmetadata', () => {
+        $('#sp-dur-time').textContent = fmtTime(audio.duration);
+      });
+      audio.addEventListener('timeupdate', () => {
+        $('#sp-cur-time').textContent = fmtTime(audio.currentTime);
+        $('#sp-dur-time').textContent = fmtTime(audio.duration);
+        if (Number.isFinite(audio.duration) && audio.duration > 0) {
+          $('#sp-seek').value = ((audio.currentTime / audio.duration) * 100).toFixed(2);
+        }
+      });
+      $('#sp-seek').addEventListener('input', (e) => {
+        if (Number.isFinite(audio.duration) && audio.duration > 0) {
+          audio.currentTime = (Number(e.target.value) / 100) * audio.duration;
+        }
+      });
+      audio.addEventListener('play', () => syncPlayer());
+      audio.addEventListener('pause', () => syncPlayer());
+      audio.addEventListener('ended', () => playTrack(songIdx + 1));
+
+      function togglePlayPause() {
+        if (!audio.src || audio.src === window.location.href) playTrack(songIdx);
+        else if (audio.paused) audio.play().catch(() => {});
+        else audio.pause();
+        syncPlayer();
+      }
+
+      $('#mp-play').addEventListener('click', togglePlayPause);
+      $('#sp-play').addEventListener('click', togglePlayPause);
+      $('#mp-prev').addEventListener('click', () => playTrack(songIdx - 1));
+      $('#sp-prev').addEventListener('click', () => playTrack(songIdx - 1));
+      $('#mp-next').addEventListener('click', () => playTrack(songIdx + 1));
+      $('#sp-next').addEventListener('click', () => playTrack(songIdx + 1));
+
+      btnYes.addEventListener('click', () => {
+        if (lockedRound) return;
+        lockedRound = true;
+        burstFirecrackers(7);
+        $('#game-toast').textContent = yesReplies[roundIdx % yesReplies.length];
+        setTimeout(() => {
+          if (roundIdx < rounds.length - 1) {
+            roundIdx++;
+            renderQuestionRound();
+            requestAnimationFrame(placeNoButton);
+          } else {
+            $('#screen-game').classList.add('hidden');
+            $('#main-site').classList.remove('hidden');
+            $('#mini-player').classList.remove('hidden');
+            showStage('stage-hero');
+            playTrack(0);
+          }
+        }, 700);
+      });
+
+      // Bear hug burst
+      function spawnHugs(x, y) {
+        const icons = ['🧸', '👑', '💖', '✨', '🌸'];
+        for (let i = 0; i < 16; i++) {
+          const span = document.createElement('span');
+          span.textContent = icons[i % icons.length];
+          span.style.cssText = `
+            position:fixed; left:${x + (Math.random() - 0.5) * 140}px;
+            top:${y - 10}px; font-size:24px; pointer-events:none; z-index:400;
+            transition:transform 1.1s ease-out, opacity 1.1s ease-out;
+          `;
+          document.body.appendChild(span);
+          requestAnimationFrame(() => {
+            span.style.transform = `translate(${(Math.random() - 0.5) * 150}px, -115px) scale(1.25)`;
+            span.style.opacity = '0';
+          });
+          setTimeout(() => span.remove(), 1150);
+        }
+      }
+      $('#hug-btn').addEventListener('click', (e) => {
+        spawnHugs(e.clientX, e.clientY);
+        bumpPrince('“Bear hugs incoming for Riddhi! Caught every single one.”', 1);
+      });
+
+      let hugCount = 0;
+      $('#meter-hug-btn').addEventListener('click', (e) => {
+        hugCount++;
+        $('#hug-count').textContent = `${hugCount} ${hugCount === 1 ? 'Hug' : 'Hugs'} Sent`;
+        spawnHugs(e.clientX, e.clientY);
+        bumpPrince(`“Hug #${hugCount} delivered straight to Princess Riddhi!”`, 1);
+      });
+
+      const compliments = [
+        '“Some smiles make the whole room feel warmer the second they appear.”',
+        '“Looking at your photos feels like flipping through a favourite storybook.”',
+        '“You have that rare, effortless grace that stays on my mind all day.”',
+        '“Even a quiet glance from you carries a whole world of sweetness.”',
+        '“Princess Day is just an excuse to celebrate what you mean every day.”'
+      ];
+      let compIdx = 0;
+      $('#next-compliment-btn').addEventListener('click', () => {
+        compIdx = (compIdx + 1) % compliments.length;
+        $('#compliment-text').textContent = compliments[compIdx];
+      });
+
+      // ALL 12 PHOTOS MATCHED TO EACH PHOTO'S OUTFIT / MOOD DISNEY PRINCESS
+      const princessGallery = [
+        { src: 'assets/images/riddhi-01.jpg', princess: 'Belle', badge: '🌹 Belle', personal: 'When I look at this picture of you, it is the gentle grace and quiet poise that catch me first.' },
+        { src: 'assets/images/riddhi-02.jpg', princess: 'Ariel', badge: '🧜‍♀️ Ariel', personal: 'There is so much life and spark in this frame—it makes me smile without even trying.' },
+        { src: 'assets/images/riddhi-03.jpg', princess: 'Anna', badge: '🌻 Anna', personal: 'Pure, candid charm—this is the kind of photo I end up looking at twice.' },
+        { src: 'assets/images/riddhi-04.jpg', princess: 'Cinderella', badge: '💙 Cinderella', personal: 'That blue vibe suits you so naturally—no wonder this one sits right in the royal spotlight.' },
+        { src: 'assets/images/riddhi-05.jpg', princess: 'Snow White', badge: '🍎 Snow White', personal: 'Rich festive red and your bright smile together—you look radiant here, Riddhi.' },
+        { src: 'assets/images/riddhi-06.jpg', princess: 'Rapunzel', badge: '🏮 Rapunzel', personal: 'Soft light and dreamy eyes—it feels like a quiet wish captured on camera.' },
+        { src: 'assets/images/riddhi-07.jpg', princess: 'Tiana', badge: '✨ Tiana', personal: 'Royal and composed from head to toe—every detail in this shot feels timeless.' },
+        { src: 'assets/images/riddhi-08.jpg', princess: 'Aurora', badge: '👑 Aurora', personal: 'Blush pink and that calm expression—so soft, sweet, and unmistakably you.' },
+        { src: 'assets/images/riddhi-09.jpg', princess: 'Jasmine', badge: '🧞‍♀️ Jasmine', personal: 'Playful and cute with a hint of mischief—my favourite kind of expression on you.' },
+        { src: 'assets/images/riddhi-10.jpg', princess: 'Moana', badge: '🌊 Moana', personal: 'Graceful and luminous—you carry yourself with such natural beauty in this one.' },
+        { src: 'assets/images/riddhi-11.jpg', princess: 'Elsa', badge: '❄️ Elsa', personal: 'Just your eyes above the phone and it still says everything—unforgettable.' },
+        { src: 'assets/images/riddhi-12.jpg', princess: 'Pocahontas', badge: '🍃 Pocahontas', personal: 'Deep crimson, gold bangles, and a soft smile—classic and heart-stealing.' }
+      ];
+
+      safeImg($('#hero-main-img'), 'Cinderella • Riddhi');
+
+      // Sliding Gallery
+      const track = $('#slider-track');
+      track.innerHTML = princessGallery.map((p, idx) => `
+        <button class="slide-card crystal-surface" type="button" data-idx="${idx}">
+          <div class="slide-thumb">
+            <img src="${p.src}" alt="Riddhi — ${p.princess}">
+          </div>
+          <div class="slide-label">
+            <span>${p.badge}</span>
+            <span>#${idx + 1}</span>
+          </div>
+        </button>`).join('');
+
+      $$('.slide-card').forEach((btn) => {
+        const item = princessGallery[+btn.dataset.idx];
+        const img = $('img', btn);
+        safeImg(img, `${item.princess} • Riddhi`);
+        btn.addEventListener('click', () => {
+          $('#lb-img').src = img.src;
+          $('#lb-caption').textContent = `${item.badge} — Riddhi`;
+          $('#lightbox').classList.remove('hidden');
+        });
+      });
+
+      $('#slide-prev-btn').addEventListener('click', () => {
+        track.scrollBy({ left: -260, behavior: 'smooth' });
+      });
+      $('#slide-next-btn').addEventListener('click', () => {
+        if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 10) {
+          track.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          track.scrollBy({ left: 260, behavior: 'smooth' });
+        }
+      });
+
+      let autoSlidePaused = false;
+      $('#slide-toggle-btn').addEventListener('click', () => {
+        autoSlidePaused = !autoSlidePaused;
+        $('#slide-toggle-btn').textContent = autoSlidePaused ? '▶ Resume Slide' : '❚❚ Pause Slide';
+      });
+      setInterval(() => {
+        if (autoSlidePaused || $('#main-site').classList.contains('hidden') || $('#stage-gallery').classList.contains('hidden')) return;
+        if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 8) {
+          track.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          track.scrollBy({ left: 240, behavior: 'smooth' });
+        }
+      }, 3200);
+
+      $('#random-photo-btn').addEventListener('click', () => {
+        const rIdx = Math.floor(Math.random() * princessGallery.length);
+        const item = princessGallery[rIdx];
+        $('#lb-img').src = item.src;
+        $('#lb-caption').textContent = `${item.badge} — Riddhi`;
+        $('#lightbox').classList.remove('hidden');
+      });
+
+      // Personal Polaroids
+      const featuredPols = [princessGallery[3], princessGallery[4], princessGallery[7], princessGallery[8]];
+      $('#polaroid-grid').innerHTML = featuredPols.map((p) => `
+        <div class="pol">
+          <div class="pol-inner">
+            <div class="pol-face">
+              <div class="pol-photo">
+                <img src="${p.src}" alt="Riddhi — ${p.princess}">
+                <span class="princess-chip">${p.badge}</span>
+              </div>
+              <div class="pol-cap">Riddhi • ${p.princess}</div>
+            </div>
+            <div class="pol-face pol-back">
+              <p>${p.personal}</p>
+            </div>
+          </div>
+        </div>`).join('');
+
+      $$('.pol').forEach((el) => {
+        el.addEventListener('click', () => el.classList.toggle('flipped'));
+      });
+      $('#flip-all-btn').addEventListener('click', () => {
+        const cards = $$('.pol');
+        const anyClosed = cards.some((c) => !c.classList.contains('flipped'));
+        cards.forEach((c) => c.classList.toggle('flipped', anyClosed));
+      });
+      $$('.pol-photo img').forEach((img, idx) => {
+        safeImg(img, `${featuredPols[idx].princess} • Riddhi`);
+      });
+
+      $('#lb-close').addEventListener('click', () => $('#lightbox').classList.add('hidden'));
+      $('#lightbox').addEventListener('click', (e) => {
+        if (e.target.id === 'lightbox') $('#lightbox').classList.add('hidden');
+      });
+
+      syncPlayer();
+    })();
+  </script>
+</body>
+</html>
