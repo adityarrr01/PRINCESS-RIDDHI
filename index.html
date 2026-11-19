@@ -1179,7 +1179,7 @@
        ============================================================ -->
   <section id="screen-game" class="hidden">
     <div class="game-card crystal-surface">
-      <img src="assets/images/riddhi-04.jpg" alt="Riddhi" class="game-avatar">
+      <img src="riddhi-04.jpg" alt="Riddhi" class="game-avatar">
       <div id="game-dots" class="game-dots"></div>
       <span class="pill" id="game-step">ROUND 1 OF 4</span>
       <h2 id="game-q" class="game-q"></h2>
@@ -1230,7 +1230,7 @@
           </div>
 
           <div class="hero-card crystal-surface">
-            <img id="hero-main-img" src="assets/images/riddhi-04.jpg" alt="Riddhi — Cinderella Blue Vibe">
+            <img id="hero-main-img" src="riddhi-04.jpg" alt="Riddhi — Cinderella Blue Vibe">
             <div class="hero-princess-tag crystal-3d">💙 Cinderella Vibe • Riddhi</div>
             <div class="hero-teddy-tag crystal-3d">🧸 Princess Riddhi • Forever</div>
           </div>
@@ -1386,7 +1386,7 @@
       </section>
     </div>
 
-    <!-- CORNER PRINCE (assets/prince/prince image 1..4.png) -->
+    <!-- CORNER PRINCE (ROOT FILES: prince image 1..4.png) -->
     <div id="prince-corner-wrap" class="prince-corner-wrap">
       <div id="prince-hud" class="prince-hud">
         <div class="prince-hud-title">FLYNN’S THOUGHTS FOR RIDDHI</div>
@@ -1396,7 +1396,7 @@
           <button id="prince-next-btn" class="prince-chip" type="button">Earth Time ▸</button>
         </div>
       </div>
-      <img id="prince-corner-img" class="prince-corner-img" src="assets/prince/prince image 1.png" alt="Prince">
+      <img id="prince-corner-img" class="prince-corner-img" src="prince image 1.png" alt="Prince">
     </div>
   </div>
 
@@ -1446,29 +1446,29 @@ And when you act all adorable and effortless, cutie, it reminds me how lucky I a
 Thank you for being there, mommy, and for making my world feel richer and fuller than I ever expected. No matter how much time moves forward, how blessed I feel having you will always stay the same.`;
 
       // ============================================================
-      // 3) YOUR 4 PRINCE IMAGES INSIDE assets/prince/
+      // 3) PRINCE IMAGES AT ROOT OF REPO
       // ============================================================
       const PRINCE_IMAGES = [
-        'assets/prince/prince image 1.png',
-        'assets/prince/prince image 2.png',
-        'assets/prince/prince image 3.png',
-        'assets/prince/prince image 4.png'
+        'prince image 1.png',
+        'prince image 2.png',
+        'prince image 3.png',
+        'prince image 4.png'
       ];
 
       // ============================================================
-      // 4) SONGS IN SEQUENCE (1-3 + 4-10)
+      // 4) SONGS AT ROOT OF REPO (1-3 + 4-10)
       // ============================================================
       const songs = [
-        { title: 'Agar Tum Saath Ho', artist: 'Alka Yagnik & Arijit Singh • Tamasha', cover: '🎬', src: 'assets/audio/song-1.mp3' },
-        { title: 'Shape of You', artist: 'Ed Sheeran', cover: '✨', src: 'assets/audio/song-2.mp3' },
-        { title: 'Tera Deedar Hua', artist: 'Pritam & Rahat Fateh Ali Khan • Jannat 2', cover: '🌙', src: 'assets/audio/song-3.mp3' },
-        { title: 'BTS - Body to Body, but Hobi never says what he needs', artist: 'Track #4', cover: '🔥', src: 'assets/audio/song-4.mp3' },
-        { title: "They don't know bout us-BTS", artist: 'Track #5', cover: '💜', src: 'assets/audio/song-5.mp3' },
-        { title: 'Jump-BTS', artist: 'Track #6', cover: '⚡', src: 'assets/audio/song-6.mp3' },
-        { title: 'Hooligan-BTS', artist: 'Track #7', cover: '👑', src: 'assets/audio/song-7.mp3' },
-        { title: 'IDOL', artist: 'Track #8', cover: '🎉', src: 'assets/audio/song-8.mp3' },
-        { title: 'Like Animals-BTS', artist: 'Track #9', cover: '🐾', src: 'assets/audio/song-9.mp3' },
-        { title: '[BTS] JK - 10000 Hours (원곡 _ Justin Bieber)', artist: 'Track #10', cover: '💫', src: 'assets/audio/song-10.mp3' }
+        { title: 'Agar Tum Saath Ho', artist: 'Alka Yagnik & Arijit Singh • Tamasha', cover: '🎬', src: 'song-1.mp3' },
+        { title: 'Shape of You', artist: 'Ed Sheeran', cover: '✨', src: 'song-2.mp3' },
+        { title: 'Tera Deedar Hua', artist: 'Pritam & Rahat Fateh Ali Khan • Jannat 2', cover: '🌙', src: 'song-3.mp3' },
+        { title: 'BTS - Body to Body, but Hobi never says what he needs', artist: 'Track #4', cover: '🔥', src: 'song-4.mp3' },
+        { title: "They don't know bout us-BTS", artist: 'Track #5', cover: '💜', src: 'song-5.mp3' },
+        { title: 'Jump-BTS', artist: 'Track #6', cover: '⚡', src: 'song-6.mp3' },
+        { title: 'Hooligan-BTS', artist: 'Track #7', cover: '👑', src: 'song-7.mp3' },
+        { title: 'IDOL', artist: 'Track #8', cover: '🎉', src: 'song-8.mp3' },
+        { title: 'Like Animals-BTS', artist: 'Track #9', cover: '🐾', src: 'song-9.mp3' },
+        { title: '[BTS] JK - 10000 Hours (원곡 _ Justin Bieber)', artist: 'Track #10', cover: '💫', src: 'song-10.mp3' }
       ];
 
       const STOP_AT_SECONDS = 30;
@@ -1563,7 +1563,7 @@ Thank you for being there, mommy, and for making my world feel richer and fuller
           <rect width="600" height="800" fill="url(#bg)"/>
           <text x="300" y="370" text-anchor="middle" fill="#ffd166" font-size="64">🧸👑</text>
           <text x="300" y="445" text-anchor="middle" fill="#fff6fa" font-family="sans-serif" font-size="26" font-weight="bold">${label}</text>
-          <text x="300" y="485" text-anchor="middle" fill="#bae6fd" font-family="sans-serif" font-size="16">assets/images/</text>
+          <text x="300" y="485" text-anchor="middle" fill="#bae6fd" font-family="sans-serif" font-size="16">root file check</text>
         </svg>`);
 
       function safeImg(img, label) {
@@ -1575,7 +1575,7 @@ Thank you for being there, mommy, and for making my world feel richer and fuller
       }
 
       // ============================================================
-      // CORNER PRINCE (assets/prince/prince image 1..4.png)
+      // CORNER PRINCE (ROOT FILES: prince image 1..4.png)
       // ============================================================
       const princeFallbackSvg = (num) =>
         'data:image/svg+xml;utf8,' +
@@ -1661,12 +1661,12 @@ Thank you for being there, mommy, and for making my world feel richer and fuller
         const primary = PRINCE_IMAGES[princePoseIdx];
         const num = princePoseIdx + 1;
         const candidates = [
-          primary,
           encodeURI(primary),
-          `assets/prince/prince_image_${num}.png`,
-          `assets/prince/prince-image-${num}.png`,
-          `assets/prince/prince${num}.png`,
-          `assets/prince/${num}.png`
+          primary,
+          `prince_image_${num}.png`,
+          `prince-image-${num}.png`,
+          `prince${num}.png`,
+          `${num}.png`
         ];
         let cIdx = 0;
         princeImgEl.onerror = () => {
@@ -2153,20 +2153,20 @@ Thank you for being there, mommy, and for making my world feel richer and fuller
         $('#compliment-text').textContent = compliments[compIdx];
       });
 
-      // ALL 12 PHOTOS MATCHED TO EACH PHOTO'S OUTFIT / MOOD DISNEY PRINCESS
+      // ALL 12 PHOTOS AT ROOT OF REPO
       const princessGallery = [
-        { src: 'assets/images/riddhi-01.jpg', princess: 'Belle', badge: '🌹 Belle', personal: 'When I look at this picture of you, it is the gentle grace and quiet poise that catch me first.' },
-        { src: 'assets/images/riddhi-02.jpg', princess: 'Ariel', badge: '🧜‍♀️ Ariel', personal: 'There is so much life and spark in this frame—it makes me smile without even trying.' },
-        { src: 'assets/images/riddhi-03.jpg', princess: 'Anna', badge: '🌻 Anna', personal: 'Pure, candid charm—this is the kind of photo I end up looking at twice.' },
-        { src: 'assets/images/riddhi-04.jpg', princess: 'Cinderella', badge: '💙 Cinderella', personal: 'That blue vibe suits you so naturally—no wonder this one sits right in the royal spotlight.' },
-        { src: 'assets/images/riddhi-05.jpg', princess: 'Snow White', badge: '🍎 Snow White', personal: 'Rich festive red and your bright smile together—you look radiant here, Riddhi.' },
-        { src: 'assets/images/riddhi-06.jpg', princess: 'Rapunzel', badge: '🏮 Rapunzel', personal: 'Soft light and dreamy eyes—it feels like a quiet wish captured on camera.' },
-        { src: 'assets/images/riddhi-07.jpg', princess: 'Tiana', badge: '✨ Tiana', personal: 'Royal and composed from head to toe—every detail in this shot feels timeless.' },
-        { src: 'assets/images/riddhi-08.jpg', princess: 'Aurora', badge: '👑 Aurora', personal: 'Blush pink and that calm expression—so soft, sweet, and unmistakably you.' },
-        { src: 'assets/images/riddhi-09.jpg', princess: 'Jasmine', badge: '🧞‍♀️ Jasmine', personal: 'Playful and cute with a hint of mischief—my favourite kind of expression on you.' },
-        { src: 'assets/images/riddhi-10.jpg', princess: 'Moana', badge: '🌊 Moana', personal: 'Graceful and luminous—you carry yourself with such natural beauty in this one.' },
-        { src: 'assets/images/riddhi-11.jpg', princess: 'Elsa', badge: '❄️ Elsa', personal: 'Just your eyes above the phone and it still says everything—unforgettable.' },
-        { src: 'assets/images/riddhi-12.jpg', princess: 'Pocahontas', badge: '🍃 Pocahontas', personal: 'Deep crimson, gold bangles, and a soft smile—classic and heart-stealing.' }
+        { src: 'riddhi-01.jpg', princess: 'Belle', badge: '🌹 Belle', personal: 'When I look at this picture of you, it is the gentle grace and quiet poise that catch me first.' },
+        { src: 'riddhi-02.jpg', princess: 'Ariel', badge: '🧜‍♀️ Ariel', personal: 'There is so much life and spark in this frame—it makes me smile without even trying.' },
+        { src: 'riddhi-03.jpg', princess: 'Anna', badge: '🌻 Anna', personal: 'Pure, candid charm—this is the kind of photo I end up looking at twice.' },
+        { src: 'riddhi-04.jpg', princess: 'Cinderella', badge: '💙 Cinderella', personal: 'That blue vibe suits you so naturally—no wonder this one sits right in the royal spotlight.' },
+        { src: 'riddhi-05.jpg', princess: 'Snow White', badge: '🍎 Snow White', personal: 'Rich festive red and your bright smile together—you look radiant here, Riddhi.' },
+        { src: 'riddhi-06.jpg', princess: 'Rapunzel', badge: '🏮 Rapunzel', personal: 'Soft light and dreamy eyes—it feels like a quiet wish captured on camera.' },
+        { src: 'riddhi-07.jpg', princess: 'Tiana', badge: '✨ Tiana', personal: 'Royal and composed from head to toe—every detail in this shot feels timeless.' },
+        { src: 'riddhi-08.jpg', princess: 'Aurora', badge: '👑 Aurora', personal: 'Blush pink and that calm expression—so soft, sweet, and unmistakably you.' },
+        { src: 'riddhi-09.jpg', princess: 'Jasmine', badge: '🧞‍♀️ Jasmine', personal: 'Playful and cute with a hint of mischief—my favourite kind of expression on you.' },
+        { src: 'riddhi-10.jpg', princess: 'Moana', badge: '🌊 Moana', personal: 'Graceful and luminous—you carry yourself with such natural beauty in this one.' },
+        { src: 'riddhi-11.jpg', princess: 'Elsa', badge: '❄️ Elsa', personal: 'Just your eyes above the phone and it still says everything—unforgettable.' },
+        { src: 'riddhi-12.jpg', princess: 'Pocahontas', badge: '🍃 Pocahontas', personal: 'Deep crimson, gold bangles, and a soft smile—classic and heart-stealing.' }
       ];
 
       safeImg($('#hero-main-img'), 'Cinderella • Riddhi');
